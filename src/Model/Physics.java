@@ -162,12 +162,9 @@ public class Physics {
 
     public double[] calculateNext(double[] posInfo) {
         updateValues(posInfo);
-
-        //entity positions are updated
-        moveX(speedX);
-        moveY(speedY);
-
         collisionCheck();
+
+
 
         //speeds are updated
         decaySpeed();
@@ -175,6 +172,9 @@ public class Physics {
         if (movingRight){setRightSpeed();}
         if (movingLeft) {setLeftSpeed();}
 
+        //entity positions are updated
+        moveX(speedX);
+        moveY(speedY);
 
         return positionInfo();
 
@@ -182,9 +182,7 @@ public class Physics {
 
     public double[] calculateJump(double[] posInfo){
         updateValues(posInfo);
-
         collisionCheck();
-
 
         //speeds are updated
         jump();

@@ -2,6 +2,7 @@ package Model;
 
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 enum ID {
     Player, Enemy
@@ -51,6 +52,8 @@ public class Entity implements Serializable {
     }
 
     public double[] getPosXY() {
+        posXY[0] = this.posX;
+        posXY[1] = this.posY;
         return posXY;
     }
 

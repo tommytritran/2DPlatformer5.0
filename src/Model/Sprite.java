@@ -19,6 +19,7 @@ public class Sprite extends Transition {
 
     public Sprite(Pane gamePane, Entity e) {
         this.e = e;
+        currPos = e.getPosXY();
         this.pane = gamePane;
         initSprite();
     }
@@ -51,9 +52,9 @@ public class Sprite extends Transition {
         e.setPosXY(pos);
     }
     public double[] getEntityCurrPos(){
-        currPos[0] = sprite.getTranslateX();
-        currPos[1] = sprite.getTranslateY();
-        return currPos;
+        e.setPosX(sprite.getTranslateX());
+        e.setPosY(sprite.getTranslateY());
+        return e.getPosXY();
     }
 
     public ID getID(){
