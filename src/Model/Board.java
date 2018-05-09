@@ -12,6 +12,8 @@ public class Board implements Serializable {
     private String soundURL;
     private String playerURL;
     private String level;
+    private double vphX = 0;
+    private double vphY;
     private int entitySize = 50;
     private int tileSize = 50;
     private double viewPortX;
@@ -67,7 +69,18 @@ public class Board implements Serializable {
     }
     public int getEntitySize(){ return entitySize;}
 
-
+    public double getVPHX(){
+        return vphX;
+    }
+    public double getVPHY(){
+        return vphY;
+    }
+    public void setVPHX(double vphX){
+        this.vphX = vphX;
+    }
+    public void setVPHY(double vphy){
+        this.vphY = vphy;
+    }
 
     public ArrayList<Entity> getEntityList() {
         return entityList;

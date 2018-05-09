@@ -26,13 +26,14 @@ public class Entity implements Serializable {
     public Entity(ID id) {
         this.id = id;
     }
+
     public String getTexture(){
         if(this.id == ID.Player){
             return "SpriteSheetCat.png";
         }
-//        if(this.id == ID.Enemy){
-//            return "enemy.png";
-//        }
+        if(this.id == ID.Enemy){
+            return "pika1.jpg";
+        }
         return null;
     }
     public double getPosX() {

@@ -160,7 +160,7 @@ public class Controller implements Initializable {
     }
 
     public void setBG(){
-        BackgroundImage myBI= new BackgroundImage(new Image("bg.png",800,500,false,true),
+        BackgroundImage myBI= new BackgroundImage(new Image(new File("bg.png").toURI().toString(),800,500,false,true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
         startPane.setBackground(new Background(myBI));

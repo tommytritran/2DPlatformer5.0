@@ -4,6 +4,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 
+import javax.swing.text.View;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +14,7 @@ public class Game {
     private Pane pane;
     private Board board;
     private ResourceManager rm;
+    private ViewPortHandler vph;
     private Physics physics;
     private Sprite playerSprite;
 
@@ -46,6 +48,7 @@ public class Game {
         this.entityList = rm.getEntityList();
         this.playerSprite = rm.getPlayerSprite();
         physics = new Physics(mapArray, board.getTileSize(), playerSprite.getEntityCurrPos());
+        vph = new ViewPortHandler(pane, 0,0);
     }
     public void loadGameSave(){
         this.entityList = board.getEntityList();
@@ -53,6 +56,7 @@ public class Game {
         spriteList = rm.newGameSave(entityList);
         this.playerSprite = rm.getPlayerSprite();
         physics = new Physics(mapArray, board.getTileSize(), playerSprite.getEntityCurrPos());
+        vph = new ViewPortHandler(pane, board.getVPHX(),board.getVPHY());
     }
     public void removeSprite(){
         for(Sprite s : spriteList){
@@ -64,8 +68,10 @@ public class Game {
         for (int i = 0; i < spriteList.size(); i++) {
             Sprite sprite = spriteList.get(i);
             if(sprite.getID() == ID.Player){
+                vph.tick(sprite.getEntityCurrPos());
                 sprite.setEntityPosInfo(physics.calculateNext(sprite.getEntityCurrPos()));
             }
+
         }
     }
 
@@ -78,7 +84,6 @@ public class Game {
         }
     }
 
-
     public void keyDown(KeyEvent e) {
         switch (e.getCode()){
             case LEFT:
@@ -86,6 +91,7 @@ public class Game {
                 break;
             case RIGHT:
                 physics.setMovingRight(true);
+
                 break;
             case UP:
                 playerSprite.setEntityPosInfo(physics.calculateJump(playerSprite.getEntityCurrPos()));

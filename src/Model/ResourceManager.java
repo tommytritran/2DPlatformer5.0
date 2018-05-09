@@ -96,14 +96,15 @@ public class ResourceManager {
                     addEntity(player);
                     System.out.println("Player added to list");
                 }
-//               if (mapArray.get(i).get(j) == 3){
-//                   posXY = new double[] {(j*board.getTileSize()), (i*board.getTileSize())};
-//                   Entity enemy1 = new Entity(ID.Enemy);
-//                   Sprite enemySprite = new Sprite(enemy1);
-//                   enemySprite.setEntityPosInfo(posXY);
-//                   addEntity(enemySprite);
-//                   System.out.println("Enemy type 3 added to list");
-//               }
+               if (mapArray.get(i).get(j) == 3){
+                   posXY = new double[] {(j*board.getTileSize()), (i*board.getTileSize()),0,0};
+                   Entity enemy1 = new Entity(ID.Enemy);
+                   enemy1.setPosXY(posXY);
+                   Sprite enemySprite = new Sprite(pane,enemy1);
+                   addSprite(enemySprite);
+                   addEntity(enemy1);
+                   System.out.println("Enemy type 3 added to list");
+               }
             }
         }
         System.out.println("entity and sprite list loaded");
