@@ -7,21 +7,31 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.ImagePattern;
 import javafx.stage.FileChooser;
 
 import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 public class Controller implements Initializable {
     @FXML
-    Pane mainPane, startPane, menuPane, gamePane;
+    Pane mainPane, startPane, menuPane, gamePane, HUD, gameOverPane;
     @FXML
     Group group;
+    @FXML
+    Label deathCounterLabel, timerLabel;
+    private int deathCounter = 0;
+    private double startTime = 0;
+    private double endTime = 0;
+    private double gameSaveTime = 0;
     public Board board;
     public Game game;
     public boolean running = false;
@@ -36,12 +46,15 @@ public class Controller implements Initializable {
         mainPane.setVisible(true);
         menuPane.setVisible(false);
         gamePane.setVisible(false);
+        gameOverPane.setVisible(false);
+        HUD.setVisible(false);
         startPane.setVisible(true);
         keyInputHandler();
     }
 
     public void newGame() throws IOException {
         startPane.setVisible(false);
+        gameOverPane.setVisible(false);
         gamePane.setVisible(true);
         if (!running) {
             this.running = !running;
@@ -54,12 +67,17 @@ public class Controller implements Initializable {
     }
 
     public void startGame() {
+        startTime = System.nanoTime();
+        deathCounter = game.getDeathCounter();
+        setTime();
         System.out.println("Starting game loop");
+        HUD.setVisible(true);
         aTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 game.tick();
                 game.render();
+                HUDhandler();
             }
         };
         aTimer.start();
@@ -69,7 +87,6 @@ public class Controller implements Initializable {
         Platform.exit();
         System.exit(0);
     }
-
 
     @FXML
     public void keyInputHandler() {
@@ -96,7 +113,6 @@ public class Controller implements Initializable {
                 }
 
             }
-
             game.keyDown(e);
         });
         group.setOnKeyReleased(e -> game.keyUp(e));
@@ -106,6 +122,7 @@ public class Controller implements Initializable {
         try {
             FileOutputStream fileOut = new FileOutputStream("gameSave.bin");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            game.saveGame(deathCounter, getTime());
             out.writeObject(game.getBoard());
             out.close();
             fileOut.close();
@@ -118,9 +135,9 @@ public class Controller implements Initializable {
     public void loadGameSave() throws IOException {
         if (aTimer != null) {
             aTimer.stop();
+            game.removeSprite();
             System.out.println("Game loop stoped");
         }
-        game.removeSprite();
         FileChooser fc = new FileChooser();
         fc.setTitle("Choose game save");
         fc.setInitialDirectory(new File("./"));
@@ -143,6 +160,7 @@ public class Controller implements Initializable {
                 startPane.setVisible(false);
                 gamePane.setVisible(true);
                 menuPane.setVisible(false);
+                gameOverPane.setVisible(false);
                 running = !running;
                 game = new Game(gamePane, board);
                 System.out.println("Game save loaded");
@@ -160,10 +178,46 @@ public class Controller implements Initializable {
     }
 
     public void setBG(){
-        BackgroundImage myBI= new BackgroundImage(new Image(new File("bg.png").toURI().toString(),800,500,false,true),
-                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+        BackgroundImage myBI= new BackgroundImage(new Image(getClass().getResource("/bg.png").toString(),800,500,false,true),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
-        startPane.setBackground(new Background(myBI));
+        Background bg = new Background(myBI);
+        System.out.println(bg);
+        System.out.println(startPane.getBackground());
+        //startPane.setBackground(bg);
+        mainPane.setBackground(bg);
+        System.out.println(startPane.getBackground());
+        gamePane.setBackground(bg);
+    }
+
+    public void HUDhandler(){
+        if(game.getPlayerState()){
+            deathCounter++;
+        }
+        if(deathCounter > 15){
+            deathCounter = 0;
+            running = !running;
+            game.removeSprite();
+            gameOverPane.setVisible(true);
+            gamePane.setVisible(false);
+            aTimer.stop();
+        }else{
+            deathCounterLabel.setText("" +deathCounter);
+        }
+        gameTimer();
+    }
+
+    public void gameTimer(){
+        endTime = System.nanoTime();
+        timerLabel.setText(""+(int)(gameSaveTime+(endTime-startTime)/ 1000000000));
+    }
+
+    public int getTime(){
+        return (int)(endTime-startTime);
+    }
+
+    public void setTime(){
+        gameSaveTime = (int)game.getGameTime()/1000000000;
     }
 
 }

@@ -1,5 +1,6 @@
 package Model;
 
+import javafx.animation.Animation;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -9,14 +10,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class Game {
     private Pane pane;
     private Board board;
     private ResourceManager rm;
     private ViewPortHandler vph;
-    private Physics physics;
+    private CollisionHandler ch;
     private Sprite playerSprite;
+    private Entity playerEntity;
+    private boolean die = false;
 
     private ArrayList<ArrayList<Integer>> mapArray = new ArrayList<>();
     private ArrayList<Sprite> spriteList = new ArrayList<>();
@@ -31,6 +35,7 @@ public class Game {
         initGame();
         loadNewGame();
     }
+
     public Game(Pane gamePane, Board board) throws IOException {
         this.pane = gamePane;
         this.board = board;
@@ -39,37 +44,75 @@ public class Game {
     }
 
     public void initGame() throws IOException {
-        rm = new ResourceManager(pane,board);
+        rm = new ResourceManager(pane, board);
         this.mapArray = rm.loadMap();
     }
-    public void loadNewGame(){
+
+    public void loadNewGame() {
         rm.loadEntity();
         this.spriteList = rm.getSpriteList();
         this.entityList = rm.getEntityList();
         this.playerSprite = rm.getPlayerSprite();
-        physics = new Physics(mapArray, board.getTileSize(), playerSprite.getEntityCurrPos());
-        vph = new ViewPortHandler(pane, 0,0);
+        vph = new ViewPortHandler(pane);
+        setPlayerEntity();
+        ch = new CollisionHandler(spriteList);
+        startAnimation();
     }
-    public void loadGameSave(){
+
+    public void loadGameSave() {
         this.entityList = board.getEntityList();
         spriteList.clear();
         spriteList = rm.newGameSave(entityList);
         this.playerSprite = rm.getPlayerSprite();
-        physics = new Physics(mapArray, board.getTileSize(), playerSprite.getEntityCurrPos());
-        vph = new ViewPortHandler(pane, board.getVPHX(),board.getVPHY());
+        vph = new ViewPortHandler(pane);
+        setPlayerEntity();
+        ch = new CollisionHandler(spriteList);
+        startAnimation();
     }
-    public void removeSprite(){
-        for(Sprite s : spriteList){
+
+    public void startAnimation() {
+        //loope spritelisten og init animation.play
+        for (int i = 0; i < spriteList.size(); i++) {
+            Sprite sprite = spriteList.get(i);
+            sprite.setCycleCount(Animation.INDEFINITE);
+            sprite.play();
+        }
+    }
+
+    public void setPlayerEntity() {
+        for (int i = 0; i < entityList.size(); i++) {
+            Entity currEntity = entityList.get(i);
+            if (currEntity.getId() == ID.Player) {
+                this.playerEntity = currEntity;
+            }
+        }
+    }
+
+    public void removeSprite() {
+        for (Sprite s : spriteList) {
             s.clearSprite();
         }
     }
 
-    public void tick(){
+    public void tick() {
+
         for (int i = 0; i < spriteList.size(); i++) {
             Sprite sprite = spriteList.get(i);
-            if(sprite.getID() == ID.Player){
+            if (sprite.getID() == ID.Player) {
                 vph.tick(sprite.getEntityCurrPos());
-                sprite.setEntityPosInfo(physics.calculateNext(sprite.getEntityCurrPos()));
+                sprite.updatePosition();
+                sprite.render();
+            }
+            if (ch.collCheck(playerSprite, sprite)) {
+                if (sprite.getID() == ID.Enemy) {
+                    die = true;
+                    playerSprite.die();
+                }
+                if (sprite.getID() == ID.powerUP1){
+                    spriteList.remove(sprite);
+                    sprite.clearSprite();
+                    playerSprite.powerUp1();
+                }
             }
 
         }
@@ -78,7 +121,7 @@ public class Game {
     public void render() {
         for (int i = 0; i < spriteList.size(); i++) {
             Sprite sprite = spriteList.get(i);
-            if (sprite.getID() == ID.Player){
+            if (sprite.getID() == ID.Player) {
                 sprite.render();
             }
         }
@@ -87,30 +130,71 @@ public class Game {
     public void keyDown(KeyEvent e) {
         switch (e.getCode()){
             case LEFT:
-                physics.setMovingLeft(true);
+                playerSprite.setMovingLeft(true);
+                playerSprite.walkLeft();
                 break;
             case RIGHT:
-                physics.setMovingRight(true);
-
+                playerSprite.setMovingRight(true);
+                playerSprite.walkRight();
                 break;
             case UP:
-                playerSprite.setEntityPosInfo(physics.calculateJump(playerSprite.getEntityCurrPos()));
+                if(!playerSprite.getHasJumped()) {
+                    playerSprite.animateJump();
+                    playerSprite.jump();
+                }
                 break;
         }
     }
 
     public void keyUp(KeyEvent e) {
-        switch (e.getCode()){
+        switch (e.getCode()) {
             case LEFT:
-                physics.setMovingLeft(false);
+                playerSprite.setIdleAnimation();
+                playerSprite.setMovingLeft(false);
                 break;
             case RIGHT:
-                physics.setMovingRight(false);
+                playerSprite.setMovingRight(false);
+                playerSprite.setIdleAnimation();
+                break;
+            default:
+                playerSprite.setIdleAnimation();
         }
     }
 
+
     public Board getBoard() {
-      this.board = board.saveGame(entityList);
+        this.board = board.saveGame(entityList);
         return board;
+    }
+
+    public void saveGame(int dc, double time) {
+        for (int i = 0; i < entityList.size(); i++) {
+            Entity tmp = entityList.get(i);
+            if (tmp.getId() == ID.Player)
+                tmp.setDeathCounter(dc);
+        }
+        board.setGameTime(time);
+    }
+
+    public double getGameTime() {
+        return board.getGameTime();
+    }
+
+    public int getDeathCounter() {
+        for (int i = 0; i < entityList.size(); i++) {
+            Entity tmp = entityList.get(i);
+            if (tmp.getId() == ID.Player) {
+                return tmp.getDeathCounter();
+            }
+        }
+        return 0;
+    }
+
+    public boolean getPlayerState(){
+        if(die){
+            die = false;
+            return true;
+        }
+        return false;
     }
 }

@@ -9,6 +9,7 @@ import javafx.scene.shape.Rectangle;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Iterator;
 
 public class ResourceManager {
@@ -52,6 +53,7 @@ public class ResourceManager {
             }
         }
         tileList.clear();
+        System.out.println(new File(board.getTileURL()).toURI().toString());
         Image tile = new Image(new File(board.getTileURL()).toURI().toString());
         for (int i = 0; i < mapArray.size(); i++) {
             for (int j = 0; j < mapArray.get(i).size(); j++) {
@@ -91,7 +93,8 @@ public class ResourceManager {
                     posXY = new double[]{(j * board.getTileSize()), (i * board.getTileSize()), 0,0};
                     Entity player = new Entity(ID.Player);
                     player.setPosXY(posXY);
-                    Sprite playerSprite = new Sprite(pane,player);
+                    player.setStartingPos(posXY);
+                    Sprite playerSprite = new Sprite(pane,player, mapArray);
                     addSprite(playerSprite);
                     addEntity(player);
                     System.out.println("Player added to list");
@@ -100,13 +103,27 @@ public class ResourceManager {
                    posXY = new double[] {(j*board.getTileSize()), (i*board.getTileSize()),0,0};
                    Entity enemy1 = new Entity(ID.Enemy);
                    enemy1.setPosXY(posXY);
-                   Sprite enemySprite = new Sprite(pane,enemy1);
+                   Sprite enemySprite = new Sprite(pane,enemy1, mapArray);
                    addSprite(enemySprite);
                    addEntity(enemy1);
                    System.out.println("Enemy type 3 added to list");
                }
+               if(mapArray.get(i).get(j) == 4){
+                   posXY = new double[] {(j*board.getTileSize()), (i*board.getTileSize()),0,0};
+                   Entity powerUP1Entity = new Entity(ID.powerUP1);
+                   powerUP1Entity.setPosXY(posXY);
+                   Sprite powerUP1 = new Sprite(pane,powerUP1Entity, mapArray);
+                   addEntity(powerUP1Entity);
+                   addSprite(powerUP1);
+               }
             }
         }
+
+        spriteList.sort((s1, s2) -> {
+            if(s1.getID() == ID.Player) return -1;
+            if(s2.getID() == ID.Player) return 1;
+            return 0;
+        });
         System.out.println("entity and sprite list loaded");
     }
 
@@ -116,9 +133,17 @@ public class ResourceManager {
         this.entityList = entityList;
         for (int i = 0; i < entityList.size(); i++) {
             if (entityList.get(i).getId() == ID.Player){
-                Sprite playerSprite = new Sprite(pane, entityList.get(i));
+                Sprite playerSprite = new Sprite(pane, entityList.get(i), mapArray);
                 addSprite(playerSprite);
                 System.out.println("Player loaded");
+            }
+            if(entityList.get(i).getId() == ID.powerUP1){
+                Sprite powerUP1 = new Sprite(pane, entityList.get(i),mapArray);
+                addSprite(powerUP1);
+            }
+            if(entityList.get(i).getId() == ID.Enemy){
+                Sprite enemy = new Sprite(pane, entityList.get(i),mapArray);
+                addSprite(enemy);
             }
         }
         return spriteList;

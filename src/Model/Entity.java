@@ -5,22 +5,26 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 enum ID {
-    Player, Enemy
+    Player, Enemy, Enemy2, Enemy3, powerUP1, powerUP2, powerUP3
 }
 
 public class Entity implements Serializable {
     protected double posX;
     protected double posY;
+    protected double startingX;
+    protected double startingY;
     protected double[] posXY;
     protected int size;
     protected ID id;
 
-    protected int count = 15;
+    protected int count = 4;
     protected int columns = 4;
     protected int offsetX = 0;
     protected int offsetY = 0;
-    protected int width = 60;
-    protected int height = 60;
+    protected int width = 32;
+    protected int height = 32;
+
+    protected int deathCounter = 0;
 
 
     public Entity(ID id) {
@@ -29,10 +33,13 @@ public class Entity implements Serializable {
 
     public String getTexture(){
         if(this.id == ID.Player){
-            return "SpriteSheetCat.png";
+            return "timmy.png";
         }
         if(this.id == ID.Enemy){
-            return "pika1.jpg";
+            return "enemy1.png";
+        }
+        if(this.getId() == ID.powerUP1){
+            return "powerUP1.png";
         }
         return null;
     }
@@ -123,8 +130,19 @@ public class Entity implements Serializable {
     public int getHeight() {
         return height;
     }
-
+    public double getStartingX(){return startingX;}
+    public double getStartingY(){return startingY;}
+    public void setStartingX(double x){startingX = x;}
+    public void setStartingY(double y){startingX = y;}
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public int getDeathCounter() { return deathCounter; }
+    public void setDeathCounter(int death) {  this.deathCounter = death; }
+
+    public void setStartingPos(double[] posXY) {
+        this.startingX = posXY[0];
+        this.startingY = posXY[1];
     }
 }
