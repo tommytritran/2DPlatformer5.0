@@ -16,6 +16,7 @@ public class Game {
     private Pane pane;
     private Board board;
     private ResourceManager rm;
+    private SoundHandler soundHandler;
     private ViewPortHandler vph;
     private CollisionHandler ch;
     private Sprite playerSprite;
@@ -26,8 +27,8 @@ public class Game {
     private ArrayList<Sprite> spriteList = new ArrayList<>();
     private ArrayList<Entity> entityList = new ArrayList<>();
 
-    private List<String> level1 = Arrays.asList("../boardArray.txt", "/res/bg.png", "block.png", "./res/bgsound.wav", "SpriteSheetCat.png", "1");
-    private List<String> level2 = Arrays.asList("src/res/boardArray1.txt", "/res/bg.png", "src/res/block.png", "src/res/bgsound.wav", "src/res/SpriteSheetCat.png", "2");
+    private List<String> level1 = Arrays.asList("../boardArray.txt", "/res/bg.png", "block.png", "/res/Arcade-Puzzler.mp3", "SpriteSheetCat.png", "1");
+    private List<String> level2 = Arrays.asList("../boardArray1.txt", "/res/bg.png", "block2.png", "/res/bgsound.wav", "SpriteSheetCat.png", "2");
 
     public Game(Pane gamePane) throws IOException {
         this.pane = gamePane;
@@ -43,9 +44,18 @@ public class Game {
         loadGameSave();
     }
 
+    public void initNewLevel() throws IOException {
+        rm.removeAll();
+        this.board = new Board(level2);
+        initGame();
+        loadNewGame();
+    }
+
+
     public void initGame() throws IOException {
         rm = new ResourceManager(pane, board);
         this.mapArray = rm.loadMap();
+        soundHandler = new SoundHandler(board);
     }
 
     public void loadNewGame() {
@@ -94,7 +104,7 @@ public class Game {
         }
     }
 
-    public void tick() {
+    public void tick() throws IOException {
 
         for (int i = 0; i < spriteList.size(); i++) {
             Sprite sprite = spriteList.get(i);
@@ -105,13 +115,17 @@ public class Game {
             }
             if (ch.collCheck(playerSprite, sprite)) {
                 if (sprite.getID() == ID.Enemy) {
-                    die = true;
                     playerSprite.die();
                 }
                 if (sprite.getID() == ID.powerUP1){
+                    soundHandler.powerup1();
                     spriteList.remove(sprite);
                     sprite.clearSprite();
                     playerSprite.powerUp1();
+                }
+                if (sprite.getID() == ID.CheckPoint){
+                    System.out.println("checkpoint");
+                    initNewLevel();
                 }
             }
 
@@ -167,11 +181,11 @@ public class Game {
         return board;
     }
 
-    public void saveGame(int dc, double time) {
+    public void saveGame(int deathCounter, double time) {
         for (int i = 0; i < entityList.size(); i++) {
             Entity tmp = entityList.get(i);
             if (tmp.getId() == ID.Player)
-                tmp.setDeathCounter(dc);
+                tmp.setDeathCounter(deathCounter);
         }
         board.setGameTime(time);
     }
@@ -181,20 +195,8 @@ public class Game {
     }
 
     public int getDeathCounter() {
-        for (int i = 0; i < entityList.size(); i++) {
-            Entity tmp = entityList.get(i);
-            if (tmp.getId() == ID.Player) {
-                return tmp.getDeathCounter();
-            }
-        }
-        return 0;
+        Entity player = playerSprite.getEntity();
+        return player.getDeathCounter();
     }
 
-    public boolean getPlayerState(){
-        if(die){
-            die = false;
-            return true;
-        }
-        return false;
-    }
 }

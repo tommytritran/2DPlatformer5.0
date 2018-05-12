@@ -28,6 +28,7 @@ public class Controller implements Initializable {
     Group group;
     @FXML
     Label deathCounterLabel, timerLabel;
+    private SoundHandler soundHandler;
     private int deathCounter = 0;
     private double startTime = 0;
     private double endTime = 0;
@@ -40,6 +41,8 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Game started");
+        soundHandler = new SoundHandler();
+        soundHandler.bgStart();
         group.setFocusTraversable(true);
         group.requestFocus();
         setBG();
@@ -55,12 +58,14 @@ public class Controller implements Initializable {
     public void newGame() throws IOException {
         startPane.setVisible(false);
         gameOverPane.setVisible(false);
+        menuPane.setVisible(false);
         gamePane.setVisible(true);
-        if (!running) {
-            this.running = !running;
-            System.out.println("New game started");
-            game = new Game(gamePane);
+        if (aTimer != null){
+            game.removeSprite();
         }
+        System.out.println("New game started");
+        game = new Game(gamePane);
+
         startGame();
 
 
@@ -75,7 +80,11 @@ public class Controller implements Initializable {
         aTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                game.tick();
+                try {
+                    game.tick();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 game.render();
                 HUDhandler();
             }
@@ -157,67 +166,55 @@ public class Controller implements Initializable {
                 System.out.println("Game class not found");
                 c.printStackTrace();
             }
-                startPane.setVisible(false);
-                gamePane.setVisible(true);
-                menuPane.setVisible(false);
-                gameOverPane.setVisible(false);
-                running = !running;
-                game = new Game(gamePane, board);
-                System.out.println("Game save loaded");
-                startGame();
+            startPane.setVisible(false);
+            gamePane.setVisible(true);
+            menuPane.setVisible(false);
+            gameOverPane.setVisible(false);
+            running = !running;
+            game = new Game(gamePane, board);
+            System.out.println("Game save loaded");
+            startGame();
         }
     }
 
     public void resumeGame() {
-        if (!running) {
-            running = !running;
-            menuPane.setVisible(false);
-            gamePane.setVisible(true);
-            aTimer.start();
-        }
+        menuPane.setVisible(false);
+        gamePane.setVisible(true);
+        aTimer.start();
     }
 
-    public void setBG(){
-        BackgroundImage myBI= new BackgroundImage(new Image(getClass().getResource("/bg.png").toString(),800,500,false,true),
+    public void setBG() {
+        BackgroundImage myBI = new BackgroundImage(new Image(getClass().getResource("/bg.png").toString(), 800, 500, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
         Background bg = new Background(myBI);
-        System.out.println(bg);
-        System.out.println(startPane.getBackground());
-        //startPane.setBackground(bg);
         mainPane.setBackground(bg);
-        System.out.println(startPane.getBackground());
-        gamePane.setBackground(bg);
     }
 
-    public void HUDhandler(){
-        if(game.getPlayerState()){
-            deathCounter++;
-        }
-        if(deathCounter > 15){
-            deathCounter = 0;
+    public void HUDhandler() {
+        if (game.getDeathCounter() > 15) {
             running = !running;
             game.removeSprite();
             gameOverPane.setVisible(true);
             gamePane.setVisible(false);
             aTimer.stop();
-        }else{
-            deathCounterLabel.setText("" +deathCounter);
+        } else {
+            deathCounterLabel.setText("" + game.getDeathCounter());
         }
         gameTimer();
     }
 
-    public void gameTimer(){
+    public void gameTimer() {
         endTime = System.nanoTime();
-        timerLabel.setText(""+(int)(gameSaveTime+(endTime-startTime)/ 1000000000));
+        timerLabel.setText("" + (int) (gameSaveTime + (endTime - startTime) / 1000000000));
     }
 
-    public int getTime(){
-        return (int)(endTime-startTime);
+    public int getTime() {
+        return (int) (endTime - startTime);
     }
 
-    public void setTime(){
-        gameSaveTime = (int)game.getGameTime()/1000000000;
+    public void setTime() {
+        gameSaveTime = (int) game.getGameTime() / 1000000000;
     }
 
 }

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 enum ID {
-    Player, Enemy, Enemy2, Enemy3, powerUP1, powerUP2, powerUP3
+    Player, Enemy, Enemy2, Enemy3, powerUP1, powerUP2, powerUP3, Tile, CheckPoint
 }
 
 public class Entity implements Serializable {
@@ -21,8 +21,8 @@ public class Entity implements Serializable {
     protected int columns = 4;
     protected int offsetX = 0;
     protected int offsetY = 0;
-    protected int width = 32;
-    protected int height = 32;
+    protected int width = 64;
+    protected int height = 64;
 
     protected int deathCounter = 0;
 
@@ -40,6 +40,9 @@ public class Entity implements Serializable {
         }
         if(this.getId() == ID.powerUP1){
             return "powerUP1.png";
+        }
+        if (this.getId() == ID.CheckPoint){
+            return "pika1.jpg";
         }
         return null;
     }

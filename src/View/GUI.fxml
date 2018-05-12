@@ -23,14 +23,6 @@
          <children>
             <Label text="Game" />
          </children></Pane>
-      <Pane fx:id="menuPane" maxWidth="0.0" prefHeight="500.0" prefWidth="800.0">
-         <children>
-            <Label layoutX="11.0" text="Menu" />
-            <Button layoutX="375.0" layoutY="305.0" mnemonicParsing="false" onAction="#exitGame" text="Exit" />
-            <Button layoutX="356.0" layoutY="181.0" mnemonicParsing="false" onAction="#saveGame" text="Save game" />
-            <Button layoutX="355.0" layoutY="227.0" mnemonicParsing="false" onAction="#loadGameSave" text="Load game" />
-            <Button layoutX="347.0" layoutY="146.0" mnemonicParsing="false" onAction="#resumeGame" text="Resume game" />
-         </children></Pane>
       <Pane fx:id="startPane" maxWidth="0.0" prefHeight="500.0" prefWidth="800.0">
          <children>
             <Button layoutX="375.0" layoutY="304.0" mnemonicParsing="false" onAction="#exitGame" text="Exit" />
@@ -39,12 +31,22 @@
             <Button layoutX="364.0" layoutY="270.0" mnemonicParsing="false" text="Settings" />
          </children>
       </Pane>
-      <Pane fx:id="gameOverPane" prefHeight="500.0" prefWidth="800.0">
+      <Pane fx:id="gameOverPane" layoutX="4.0" prefHeight="500.0" prefWidth="800.0">
          <children>
             <Label layoutX="348.0" layoutY="90.0" text="GAME OVER!" />
             <Button layoutX="345.0" layoutY="147.0" mnemonicParsing="false" onAction="#newGame" text="New game" />
             <Button layoutX="374.0" layoutY="306.0" mnemonicParsing="false" onAction="#exitGame" text="Exit" />
             <Button layoutX="355.0" layoutY="231.0" mnemonicParsing="false" onAction="#loadGameSave" text="Load game" />
+         </children>
+      </Pane>
+      <Pane fx:id="menuPane" maxWidth="0.0" prefHeight="500.0" prefWidth="800.0">
+         <children>
+            <Label layoutX="11.0" text="Menu" />
+            <Button layoutX="375.0" layoutY="305.0" mnemonicParsing="false" onAction="#exitGame" text="Exit" />
+            <Button layoutX="356.0" layoutY="181.0" mnemonicParsing="false" onAction="#saveGame" text="Save game" />
+            <Button layoutX="355.0" layoutY="227.0" mnemonicParsing="false" onAction="#loadGameSave" text="Load game" />
+            <Button layoutX="347.0" layoutY="146.0" mnemonicParsing="false" onAction="#resumeGame" text="Resume game" />
+            <Button layoutX="355.0" layoutY="102.0" mnemonicParsing="false" onAction="#newGame" text="New game" />
          </children>
       </Pane>
       <Group fx:id="group" />

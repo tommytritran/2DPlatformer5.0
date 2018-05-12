@@ -84,6 +84,13 @@ public class Sprite extends Transition {
         return e.getPosXY();
     }
 
+    public Entity getEntity(){
+        return e;
+    }
+    public void setDeathCounter(){
+        this.e.setDeathCounter(e.getDeathCounter()+1);
+    }
+
     public ID getID() {
         return e.getId();
     }
@@ -110,16 +117,16 @@ public class Sprite extends Transition {
             e.setCount(4);
             e.setColumns(4);
             e.setOffsetX(0);
-            e.setOffsetY(32);
+            e.setOffsetY(64);
         }
     }
 
     public void walkLeft() {
         if (e.getId() == ID.Player) {
-            e.setCount(4);
-            e.setColumns(4);
+            e.setCount(6);
+            e.setColumns(6);
             e.setOffsetX(0);
-            e.setOffsetY(64);
+            e.setOffsetY(64*2);
         }
     }
 
