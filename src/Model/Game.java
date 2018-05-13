@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane;
 
 import javax.swing.text.View;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -111,11 +112,10 @@ public class Game {
             if (sprite.getID() == ID.Player) {
                 vph.tick(sprite.getEntityCurrPos());
                 sprite.updatePosition();
-                sprite.render();
             }
             if (ch.collCheck(playerSprite, sprite)) {
                 if (sprite.getID() == ID.Enemy) {
-                    playerSprite.die();
+                    playerSprite.deathAnimation();
                 }
                 if (sprite.getID() == ID.powerUP1){
                     soundHandler.powerup1();

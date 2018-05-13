@@ -101,7 +101,6 @@ public class Controller implements Initializable {
     public void keyInputHandler() {
 
         group.setOnKeyPressed(e -> {
-            System.out.println(e.getCode());
             if (e.getCode() == KeyCode.P) {
 
             }

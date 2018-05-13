@@ -1,6 +1,7 @@
 package Model;
 
 
+import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.Transition;
 import javafx.geometry.Rectangle2D;
@@ -42,7 +43,7 @@ public class Sprite extends Transition {
         this.pane = gamePane;
         initSprite();
         this.physics = new Physics(board, e.getPosXY());
-        setCycleDuration(Duration.millis(500));
+        setCycleDuration(Duration.millis(1000));
         setInterpolator(Interpolator.LINEAR);
     }
 
@@ -87,10 +88,6 @@ public class Sprite extends Transition {
     public Entity getEntity(){
         return e;
     }
-    public void setDeathCounter(){
-        this.e.setDeathCounter(e.getDeathCounter()+1);
-    }
-
     public ID getID() {
         return e.getId();
     }
@@ -132,19 +129,32 @@ public class Sprite extends Transition {
 
     public void animateJump() {
         if (e.getId() == ID.Player) {
-            e.setCount(4);
-            e.setColumns(4);
+            e.setCount(1);
+            e.setColumns(1);
             e.setOffsetX(0);
-            e.setOffsetY(32);
+            e.setOffsetY(64*3);
         }
     }
 
     public void die() {
         e.setDeathCounter(e.getDeathCounter()+1);
         physics.die();
+        System.out.println("die");
+        setIdleAnimation();
+    }
+
+    public void deathAnimation() {
+        e.setColumns(3);
+        e.setCount(3);
+        e.setOffsetY(64*4);
+        
     }
 
     public void powerUp1() {
+        System.out.println("powerUP1");
+        e.setCount(2);
+        e.setColumns(2);
+        e.setOffsetY(64*5);
         physics.powerUP1();
     }
 
@@ -292,8 +302,6 @@ public class Sprite extends Transition {
             outXpos = e.getStartingX();
             outYpos = e.getStartingY();
             speedX = speedY = 0;
-            //deaths++;
-            System.out.println("Deaths: ");
         }
 
         private void collisionUp(double UPos, double LPos, double RPos) {
@@ -302,7 +310,6 @@ public class Sprite extends Transition {
             LPos += 10;
             if (board.get(arrayPos).get((int) (LPos / TILESIZE)) == 1 || //x = -L+R y = -U+D
                     board.get(arrayPos).get((int) (RPos / TILESIZE)) == 1) {
-                System.out.println("COLLISION UP");
                 outYpos = (TILESIZE * ((int) (Ypos + TILESIZE) / TILESIZE));
                 speedY = 0;
             }
@@ -330,8 +337,6 @@ public class Sprite extends Transition {
 
             if (board.get((int) (UPos / TILESIZE)).get(arrayRow) == 1 ||
                     board.get((int) (DPos / TILESIZE)).get(arrayRow) == 1) {
-
-                System.out.println("COLLISION LEFT");
                 outXpos = (TILESIZE * ((int) (LPos + TILESIZE) / TILESIZE));
                 speedX = 0;
             }
@@ -346,7 +351,6 @@ public class Sprite extends Transition {
             if (board.get((int) (UPos / TILESIZE)).get(arrayRow) == 1 ||
                     board.get((int) (DPos / TILESIZE)).get(arrayRow) == 1) {
 
-                System.out.println("RPOS " + RPos + "  block : " + RPos / TILESIZE);
                 outXpos = (TILESIZE * ((int) (RPos / TILESIZE) - 1));
                 speedX = 0;
             }
@@ -374,8 +378,6 @@ public class Sprite extends Transition {
             moveX(speedX);
             moveY(speedY);
 
-            //  System.out.println(outXpos);
-            // System.out.println(outYpos);
 
             return positionInfo();
 

@@ -89,7 +89,6 @@ public class ResourceManager {
     public void removeAll() {
         Iterator<Sprite> iterSprite = spriteList.iterator();
         while (iterSprite.hasNext()) {
-            System.out.println("test");
             pane.getChildren().remove(iterSprite.next());
         }
         Iterator<Rectangle> iterTile = tileList.iterator();
@@ -111,7 +110,6 @@ public class ResourceManager {
                     Sprite playerSprite = new Sprite(pane, player, mapArray);
                     addSprite(playerSprite);
                     addEntity(player);
-                    System.out.println("Player added to list");
                 }
                 if (mapArray.get(i).get(j) == 3) {
                     posXY = new double[]{(j * board.getTileSize()), (i * board.getTileSize()), 0, 0};
@@ -120,7 +118,6 @@ public class ResourceManager {
                     Sprite enemySprite = new Sprite(pane, enemy1, mapArray);
                     addSprite(enemySprite);
                     addEntity(enemy1);
-                    System.out.println("Enemy type 3 added to list");
                 }
                 if (mapArray.get(i).get(j) == 4) {
                     posXY = new double[]{(j * board.getTileSize()), (i * board.getTileSize()), 0, 0};
@@ -138,13 +135,9 @@ public class ResourceManager {
                     Sprite ckp = new Sprite(pane, checkpoint, mapArray);
                     addSprite(ckp);
                     addEntity(checkpoint);
-                    System.out.println("checkpoint added");
                 }
             }
         }
-
-
-        System.out.println("entity and sprite list loaded");
     }
 
     public ArrayList<Sprite> newGameSave(ArrayList<Entity> entityList) {
