@@ -7,10 +7,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
+import javafx.util.converter.NumberStringConverter;
 
 import java.io.*;
 import java.net.URL;
@@ -18,12 +22,15 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
     @FXML
-    Pane mainPane, startPane, menuPane, gamePane, HUD, gameOverPane;
+    Pane mainPane, startPane, menuPane, gamePane, HUD, gameOverPane, editorPane;
     @FXML
     Group group;
     @FXML
     Label deathCounterLabel, timerLabel;
+    @FXML
+    TextField mapWidth, mapHeight;
     private SoundHandler soundHandler;
+    private Editor editor;
     private int deathCounter = 0;
     private double startTime = 0;
     private double endTime = 0;
@@ -43,6 +50,7 @@ public class Controller implements Initializable {
         group.requestFocus();
         setBG();
         mainPane.setVisible(true);
+        editorPane.setVisible(false);
         menuPane.setVisible(false);
         gamePane.setVisible(false);
         gameOverPane.setVisible(false);
@@ -215,6 +223,43 @@ public class Controller implements Initializable {
 
     public void setTime() {
         gameSaveTime = (int) game.getGameTime() / 1000000000;
+    }
+
+    public void startEditor(){
+        startPane.setVisible(false);
+        editorPane.setVisible(true);
+        editor = new Editor(editorPane);
+        mapWidth.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
+        mapHeight.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
+    }
+
+
+    public void mapSize(){
+        int w = Integer.parseInt(mapWidth.getText());
+        int h = Integer.parseInt(mapHeight.getText());
+        editor.setSize(w,h);
+    }
+
+    public void drawTile(MouseEvent e){
+        editor.drawTile(e.getX(),e.getY());
+    }
+
+    public void saveEditorMap() throws FileNotFoundException {
+        editor.saveMap();
+    }
+
+    public void playEditorMap() throws IOException {
+        loadGameSave();
+    }
+
+    public void loadEditorMap() throws IOException {
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Choose game save");
+        fc.setInitialDirectory(new File("src/res/"));
+        File file = fc.showOpenDialog(startPane.getParent().getScene().getWindow());
+        if(file != null){
+            editor.loadMap(file);
+        }
     }
 
 }

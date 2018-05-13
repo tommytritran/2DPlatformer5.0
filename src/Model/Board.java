@@ -84,4 +84,8 @@ public class Board implements Serializable {
     public double getGameTime(){
         return gameTime;
     }
+
+    public void setMapURL(String url) {
+        this.mapURL = url;
+    }
 }

@@ -44,6 +44,7 @@ public class ResourceManager {
             }
             mapArray.add(row);
         }
+        br.close();
         renderBoard();
         return mapArray;
     }
