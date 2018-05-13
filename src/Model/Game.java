@@ -22,14 +22,13 @@ public class Game {
     private CollisionHandler ch;
     private Sprite playerSprite;
     private Entity playerEntity;
-    private boolean die = false;
 
     private ArrayList<ArrayList<Integer>> mapArray = new ArrayList<>();
     private ArrayList<Sprite> spriteList = new ArrayList<>();
     private ArrayList<Entity> entityList = new ArrayList<>();
 
-    private List<String> level1 = Arrays.asList("../boardArray.txt", "/res/bg.png", "block.png", "/res/Arcade-Puzzler.mp3", "SpriteSheetCat.png", "1");
-    private List<String> level2 = Arrays.asList("../boardArray1.txt", "/res/bg.png", "block2.png", "/res/bgsound.wav", "SpriteSheetCat.png", "2");
+    private List<String> level1 = Arrays.asList("src/boardArray.txt", "/res/bg.png", "src/block.png", "/res/Arcade-Puzzler.mp3", "SpriteSheetCat.png", "1");
+    private List<String> level2 = Arrays.asList("src/boardArray1.txt", "/res/bg.png", "src/block2.png", "/res/bgsound.wav", "SpriteSheetCat.png", "2");
 
     public Game(Pane gamePane) throws IOException {
         this.pane = gamePane;
@@ -99,10 +98,8 @@ public class Game {
         }
     }
 
-    public void removeSprite() {
-        for (Sprite s : spriteList) {
-            s.clearSprite();
-        }
+    public void removeAll() {
+        rm.removeAll();
     }
 
     public void tick() throws IOException {

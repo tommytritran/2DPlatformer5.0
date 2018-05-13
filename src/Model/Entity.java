@@ -33,16 +33,16 @@ public class Entity implements Serializable {
 
     public String getTexture(){
         if(this.id == ID.Player){
-            return "timmy.png";
+            return "src/timmy.png";
         }
         if(this.id == ID.Enemy){
-            return "enemy1.png";
+            return "src/enemy1.png";
         }
         if(this.getId() == ID.powerUP1){
-            return "powerUP1.png";
+            return "src/powerUP1.png";
         }
         if (this.getId() == ID.CheckPoint){
-            return "pika1.jpg";
+            return "src/pika1.jpg";
         }
         return null;
     }

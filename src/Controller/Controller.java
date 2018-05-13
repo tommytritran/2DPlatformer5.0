@@ -3,23 +3,18 @@ package Controller;
 import Model.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.ImagePattern;
 import javafx.stage.FileChooser;
 
 import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
 
 public class Controller implements Initializable {
     @FXML
@@ -36,6 +31,7 @@ public class Controller implements Initializable {
     public Board board;
     public Game game;
     public boolean running = false;
+    public boolean newGame = true;
     AnimationTimer aTimer;
 
     @Override
@@ -56,19 +52,24 @@ public class Controller implements Initializable {
     }
 
     public void newGame() throws IOException {
-        startPane.setVisible(false);
-        gameOverPane.setVisible(false);
-        menuPane.setVisible(false);
-        gamePane.setVisible(true);
         if (aTimer != null){
-            game.removeSprite();
+            game.removeAll();
+        }
+        if(newGame && !running){
+            newGame = false;
+            running = true;
+            startPane.setVisible(false);
+            gamePane.setVisible(true);
+        }
+        if(!running){
+            running = true;
+            gameOverPane.setVisible(false);
+            menuPane.setVisible(false);
+            gamePane.setVisible(true);
         }
         System.out.println("New game started");
         game = new Game(gamePane);
-
         startGame();
-
-
     }
 
     public void startGame() {
@@ -143,7 +144,7 @@ public class Controller implements Initializable {
     public void loadGameSave() throws IOException {
         if (aTimer != null) {
             aTimer.stop();
-            game.removeSprite();
+            game.removeAll();
             System.out.println("Game loop stoped");
         }
         FileChooser fc = new FileChooser();
@@ -193,7 +194,7 @@ public class Controller implements Initializable {
     public void HUDhandler() {
         if (game.getDeathCounter() > 15) {
             running = !running;
-            game.removeSprite();
+            game.removeAll();
             gameOverPane.setVisible(true);
             gamePane.setVisible(false);
             aTimer.stop();

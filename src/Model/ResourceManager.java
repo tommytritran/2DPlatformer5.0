@@ -23,6 +23,8 @@ public class ResourceManager {
     private ArrayList<Sprite> spriteList = new ArrayList<>();
     private ArrayList<Rectangle> tileList = new ArrayList<>();
 
+    private Sprite player;
+
     public ResourceManager(Pane pane, Board board) {
         this.pane = pane;
         this.board = board;
@@ -89,12 +91,15 @@ public class ResourceManager {
     public void removeAll() {
         Iterator<Sprite> iterSprite = spriteList.iterator();
         while (iterSprite.hasNext()) {
-            pane.getChildren().remove(iterSprite.next());
+            pane.getChildren().remove(iterSprite.next().getSprite());
         }
         Iterator<Rectangle> iterTile = tileList.iterator();
         while (iterTile.hasNext()){
             pane.getChildren().remove(iterTile.next());
         }
+        spriteList.clear();
+        entityList.clear();
+        tileList.clear();
     }
 
 
@@ -108,6 +113,7 @@ public class ResourceManager {
                     player.setPosXY(posXY);
                     player.setStartingPos(posXY);
                     Sprite playerSprite = new Sprite(pane, player, mapArray);
+                    this.player = playerSprite;
                     addSprite(playerSprite);
                     addEntity(player);
                 }
@@ -147,8 +153,8 @@ public class ResourceManager {
         for (int i = 0; i < entityList.size(); i++) {
             if (entityList.get(i).getId() == ID.Player) {
                 Sprite playerSprite = new Sprite(pane, entityList.get(i), mapArray);
+                this.player = playerSprite;
                 addSprite(playerSprite);
-                System.out.println("Player loaded");
             }
             if (entityList.get(i).getId() == ID.powerUP1) {
                 Sprite powerUP1 = new Sprite(pane, entityList.get(i), mapArray);
@@ -158,18 +164,16 @@ public class ResourceManager {
                 Sprite enemy = new Sprite(pane, entityList.get(i), mapArray);
                 addSprite(enemy);
             }
+            if (entityList.get(i).getId() == ID.CheckPoint){
+                Sprite checkpoint = new Sprite(pane, entityList.get(i), mapArray);
+                addSprite(checkpoint);
+            }
         }
         return spriteList;
     }
 
 
     public Sprite getPlayerSprite() {
-        for (int i = 0; i < spriteList.size(); i++) {
-            Sprite sprite = spriteList.get(i);
-            if (sprite.getID() == ID.Player) {
-                return sprite;
-            }
-        }
-        return null;
+        return this.player;
     }
 }
