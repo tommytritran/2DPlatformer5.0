@@ -53,7 +53,6 @@ public class ResourceManager {
     }
 
     public void renderBoard() {
-        System.out.println("loaded array"+Arrays.toString(mapArray.toArray()));
         if (!tileList.isEmpty()) {
             Iterator<Rectangle> iter = tileList.iterator();
             while (iter.hasNext()) {
@@ -115,7 +114,6 @@ public class ResourceManager {
                 if (mapArray.get(i).get(j) == 2) {
                     posXY = new double[]{(j * board.getTileSize()), (i * board.getTileSize()), 0, 0};
                     Entity player = new Entity(ID.Player);
-                    System.out.println("player created");
                     player.setPosXY(posXY);
                     player.setStartingPos(posXY);
                     Sprite playerSprite = new Sprite(pane, player, mapArray);
@@ -130,6 +128,14 @@ public class ResourceManager {
                     Sprite enemySprite = new Sprite(pane, enemy1, mapArray);
                     addSprite(enemySprite);
                     addEntity(enemy1);
+                }
+                if (mapArray.get(i).get(j) == 5) {
+                    posXY = new double[]{(j * board.getTileSize()), (i * board.getTileSize()), 0, 0};
+                    Entity spike = new Entity(ID.spike);
+                    spike.setPosXY(posXY);
+                    Sprite enemySprite = new Sprite(pane, spike, mapArray);
+                    addSprite(enemySprite);
+                    addEntity(spike);
                 }
                 if (mapArray.get(i).get(j) == 4) {
                     posXY = new double[]{(j * board.getTileSize()), (i * board.getTileSize()), 0, 0};
@@ -170,6 +176,10 @@ public class ResourceManager {
                 Sprite enemy = new Sprite(pane, entityList.get(i), mapArray);
                 addSprite(enemy);
             }
+            if (entityList.get(i).getId() == ID.spike) {
+                Sprite spike = new Sprite(pane, entityList.get(i), mapArray);
+                addSprite(spike);
+            }
             if (entityList.get(i).getId() == ID.CheckPoint){
                 Sprite checkpoint = new Sprite(pane, entityList.get(i), mapArray);
                 addSprite(checkpoint);
@@ -180,7 +190,6 @@ public class ResourceManager {
 
 
     public Sprite getPlayerSprite() {
-        System.out.println("Player sprite returned");
         return this.player;
     }
 }

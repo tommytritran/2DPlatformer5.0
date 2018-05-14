@@ -40,13 +40,14 @@ public class Game {
     public Game(Pane gamePane, Board board) throws IOException {
         this.pane = gamePane;
         this.board = board;
-        if(board.getMapArray() != null){
+        if (board.getMapArray() != null) {
             loadEditorMap();
-        }else{
+        } else {
             initGame();
             loadGameSave();
         }
     }
+
     public void loadEditorMap() throws IOException {
         rm = new ResourceManager(pane, board);
         soundHandler = new SoundHandler(board);
@@ -60,6 +61,7 @@ public class Game {
         ch = new CollisionHandler(spriteList);
 
     }
+
     public void initNewLevel() throws IOException {
         rm.removeAll();
         this.board = new Board(level2);
@@ -125,25 +127,26 @@ public class Game {
             if (sprite.getID() == ID.Player) {
                 vph.tick(sprite.getEntityCurrPos());
                 sprite.updatePosition();
+                sprite.render();
+            }
+            if (sprite.getID() == ID.Enemy) {
+                sprite.updatePosition();
+                sprite.render();
             }
             if (ch.collCheck(playerSprite, sprite)) {
                 if (sprite.getID() == ID.Enemy) {
-                    playerSprite.deathAnimation();
-                    sprite.clearSprite();
-                    spriteList.remove(sprite);
+                    playerSprite.die();
                 }
-                if (sprite.getID() == ID.powerUP1){
-                    soundHandler.powerup1();
+                if (sprite.getID() == ID.powerUP1) {
                     spriteList.remove(sprite);
                     sprite.clearSprite();
                     playerSprite.powerUp1();
                 }
-                if (sprite.getID() == ID.CheckPoint){
+                if (sprite.getID() == ID.CheckPoint) {
                     System.out.println("checkpoint");
                     initNewLevel();
                 }
             }
-
         }
     }
 
@@ -157,7 +160,7 @@ public class Game {
     }
 
     public void keyDown(KeyEvent e) {
-        switch (e.getCode()){
+        switch (e.getCode()) {
             case LEFT:
                 playerSprite.setMovingLeft(true);
                 playerSprite.walkLeft();
@@ -167,10 +170,8 @@ public class Game {
                 playerSprite.walkRight();
                 break;
             case UP:
-                if(!playerSprite.getHasJumped()) {
-                    playerSprite.animateJump();
-                    playerSprite.jump();
-                }
+                playerSprite.animateJump();
+                playerSprite.jump();
                 break;
         }
     }

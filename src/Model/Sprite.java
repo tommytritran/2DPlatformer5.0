@@ -12,6 +12,8 @@ import javafx.util.Duration;
 import java.io.File;
 import java.util.ArrayList;
 
+import static Model.ID.Enemy;
+
 public class Sprite extends Transition {
     ImageView sprite;
     Entity e;
@@ -43,6 +45,10 @@ public class Sprite extends Transition {
         this.pane = gamePane;
         initSprite();
         this.physics = new Physics(board, e.getPosXY());
+        if (e.getId()==Enemy){
+            movingRight=true;
+            physics.maxSpeed=3;
+        }
         setCycleDuration(Duration.millis(1000));
         setInterpolator(Interpolator.LINEAR);
     }
@@ -137,7 +143,6 @@ public class Sprite extends Transition {
     }
 
     public void die() {
-        e.setDeathCounter(e.getDeathCounter()+1);
         physics.die();
         System.out.println("die");
         setIdleAnimation();
@@ -151,11 +156,7 @@ public class Sprite extends Transition {
     }
 
     public void powerUp1() {
-        System.out.println("powerUP1");
-        e.setCount(2);
-        e.setColumns(2);
-        e.setOffsetY(64*5);
-        physics.powerUP1();
+        physics.jumpSpeed = 20;
     }
 
     public void setMovingLeft(boolean b) {
@@ -174,10 +175,6 @@ public class Sprite extends Transition {
         return movingRight;
     }
 
-    public boolean getHasJumped() {
-        return physics.getHasJumped();
-    }
-
     public void updatePosition() {
         setEntityPosInfo(
                 physics.calculateNext(
@@ -185,9 +182,7 @@ public class Sprite extends Transition {
     }
 
     public void jump() {
-        setEntityPosInfo(
-                physics.calculateJump(
-                        getEntityCurrPos()));
+        physics.jumpNextFrame = true;
     }
 
     private class Physics {
@@ -195,12 +190,14 @@ public class Sprite extends Transition {
         final private double GRAVITY = 0.75;     //def 0.75
         final private double ACCELERATION = 0.6; //def 0.6
         final private double DECAY = 0.4;        //def 0.4
-        private int jumpSpeed = 15;     //def 15
-        final private int MAXSPEED = 10;      //def 10
         final private int TILESIZE = 50;      //def 50
+        final private int BUFFER = 10;
 
-        boolean hasJumped = false;
-
+        private int jumpSpeed = 15;     //def 15
+        private int maxSpeed = 10;      //def 10
+        private boolean jumpNextFrame = false;
+        private boolean hasJumped = false;
+        private boolean hasCollided = false;
 
         double speedX;
         double speedY;
@@ -217,37 +214,30 @@ public class Sprite extends Transition {
             outYpos = Ypos;
         }
 
-        public void updateValues(double[] posInfo) {
+        void updateValues(double[] posInfo) {
             this.Xpos = posInfo[0];
             this.Ypos = posInfo[1];
             this.speedX = posInfo[2];
             this.speedY = posInfo[3];
         }
 
-
-        private void setRightSpeed() {
-            speedX = (speedX > MAXSPEED) ? MAXSPEED : speedX + ACCELERATION;
+        private double[] positionInfo() {
+            return new double[]{outXpos, outYpos, speedX, speedY};
         }
 
-        private void setLeftSpeed() {
-            speedX = (speedX < -MAXSPEED) ? -MAXSPEED : speedX - ACCELERATION;
+
+        private void updateRightSpeed() {
+            speedX = (speedX > maxSpeed) ? maxSpeed : speedX + ACCELERATION;
         }
 
-        private void setGravitySpeed() {
-            speedY = (speedY > MAXSPEED) ? MAXSPEED : speedY + GRAVITY;
+        private void updateLeftSpeed() {
+            speedX = (speedX < -maxSpeed) ? -maxSpeed : speedX - ACCELERATION;
         }
 
-        private void moveX(Double speed) {
-            outXpos += speed;
+        private void updateGravitySpeed() {
+            speedY = (speedY > maxSpeed) ? maxSpeed : speedY + GRAVITY;
         }
 
-        private void moveY(Double speed) {
-            outYpos += speed;
-        }
-
-        public boolean getHasJumped() {
-            return hasJumped;
-        }
 
         private void jump() {
             if (!hasJumped) {
@@ -268,146 +258,104 @@ public class Sprite extends Transition {
             }
         }
 
-        private void collisionCheck() {
-            double LPos, RPos, UPos, DPos; //Left, Right, Up, Down boundaries of the entity
-            LPos = Xpos;
-            RPos = Xpos + TILESIZE;
-            UPos = Ypos;
-            DPos = Ypos + TILESIZE;
-
-            try {
-                if (speedY < 0) { // going up
-                    collisionUp(UPos, LPos, RPos);
-                } else {
-                    collisionDown(DPos, LPos, RPos);
-                }
-                if (speedX < 0) { // going left
-                    collisionLeft(LPos, UPos, DPos);
-                } else if (speedX > 0) { //going right
-                    collisionRight(RPos, UPos, DPos);
-                }
-            } catch (IndexOutOfBoundsException e) {
-
-                if (outYpos > 600 && outXpos > 0) {
-                    die();
-                }
-                if (outXpos < 0) {
-                    outXpos = 200;
-                }
-
-            }
-        }
-
-        public void die() {
+        void die() {
+            e.setDeathCounter(e.getDeathCounter()+1);
             outXpos = e.getStartingX();
             outYpos = e.getStartingY();
             speedX = speedY = 0;
         }
 
+
         private void collisionUp(double UPos, double LPos, double RPos) {
             int arrayPos = (int) ((UPos + (speedY / TILESIZE)) / TILESIZE);
-            RPos -= 10;
-            LPos += 10;
             if (board.get(arrayPos).get((int) (LPos / TILESIZE)) == 1 || //x = -L+R y = -U+D
                     board.get(arrayPos).get((int) (RPos / TILESIZE)) == 1) {
                 outYpos = (TILESIZE * ((int) (Ypos + TILESIZE) / TILESIZE));
                 speedY = 0;
             }
-
-
         }
 
         private void collisionDown(double DPos, double LPos, double RPos) {
             int arrayPos = (int) ((DPos + (speedY / TILESIZE)) / TILESIZE);
-            LPos += 1;
-            RPos -= 1;
             if (board.get(arrayPos).get((int) (LPos / TILESIZE)) == 1 ||
                     board.get(arrayPos).get((int) (RPos / TILESIZE)) == 1) {
-
                 outYpos = (TILESIZE * (int) (Ypos / TILESIZE));
                 speedY = 0;
                 hasJumped = false;
             }
         }
 
-        private void collisionLeft(double LPos, double UPos, double DPos) {
+        private boolean collisionLeft(double LPos, double UPos, double DPos) {
             int arrayRow = (int) (LPos + (speedX / TILESIZE)) / TILESIZE;
-            DPos -= 10; //buffer for tick-related positioning errors
-            UPos += 10;
 
             if (board.get((int) (UPos / TILESIZE)).get(arrayRow) == 1 ||
                     board.get((int) (DPos / TILESIZE)).get(arrayRow) == 1) {
                 outXpos = (TILESIZE * ((int) (LPos + TILESIZE) / TILESIZE));
                 speedX = 0;
+                return true;
             }
-
+            return false;
         }
 
-        private void collisionRight(double RPos, double UPos, double DPos) {
+        private boolean collisionRight(double RPos, double UPos, double DPos) {
             int arrayRow = (int) (RPos + (speedX / TILESIZE)) / TILESIZE;
-            DPos -= 10; //buffer for tick-related positioning errors
-            UPos += 10;
-
             if (board.get((int) (UPos / TILESIZE)).get(arrayRow) == 1 ||
                     board.get((int) (DPos / TILESIZE)).get(arrayRow) == 1) {
-
                 outXpos = (TILESIZE * ((int) (RPos / TILESIZE) - 1));
                 speedX = 0;
+                return true;
             }
+            return false;
         }
 
-        private double[] positionInfo() {
-            return new double[]{outXpos, outYpos, speedX, speedY};
-        }
 
-        public double[] calculateNext(double[] posInfo) {
+        double[] calculateNext(double[] posInfo) {
+            //imports position values from entity object
             updateValues(posInfo);
-            collisionCheck();
 
+            //checks collisions
+            try {
+                if (speedY < 0) { // going up
+                    collisionUp(Ypos, Xpos + BUFFER, Xpos + TILESIZE - BUFFER);
+                } else {
+                    collisionDown(Ypos + TILESIZE,Xpos + BUFFER, Xpos + TILESIZE - BUFFER);
+                }
+                if (speedX < 0) { // going left
+                    hasCollided = collisionLeft(Xpos, Ypos + BUFFER, Ypos + TILESIZE- BUFFER);
+                } else if (speedX > 0) { //going right
+                    hasCollided = collisionRight(Xpos + TILESIZE, Ypos + BUFFER, Ypos + TILESIZE - BUFFER);
+                }
+            } catch (IndexOutOfBoundsException e) {
+                if (outYpos > 600 || outXpos < 0) { //To the left or below the map
+                    die();
+                }
+            }
+            if (e.getId() == Enemy && hasCollided){
+                swapDirection();
+            }
             //speeds are updated
             decaySpeed();
-            setGravitySpeed();
-            if (getMovingRight()) {
-                setRightSpeed();
-            }
-            if (getMovingLeft()) {
-                setLeftSpeed();
-            }
+            updateGravitySpeed();
+            if (jumpNextFrame) {
+                jumpNextFrame = false;
+                jump();}
 
-            //entity positions are updated
-            moveX(speedX);
-            moveY(speedY);
+            if (getMovingRight()){ updateRightSpeed();}
+            if (getMovingLeft()) { updateLeftSpeed();}
 
+            //entity positions are updated with delta position
+            outXpos += speedX;
+            outYpos += speedY;
 
-            return positionInfo();
-
-        }
-
-        public double[] calculateJump(double[] posInfo) {
-            updateValues(posInfo);
-            collisionCheck();
-
-            //speeds are updated
-            jump();
-            decaySpeed();
-            setGravitySpeed();
-            if (getMovingRight()) {
-                setRightSpeed();
-            }
-            if (movingLeft) {
-                setLeftSpeed();
-            }
-
-            //entity positions are updated
-            moveX(speedX);
-            moveY(speedY);
 
             return positionInfo();
         }
 
-        public void powerUP1() {
-            this.jumpSpeed = 20;
+        private void swapDirection() {
+            movingLeft = !movingLeft;
+            movingRight = !movingRight;
         }
+
     }
 
 }
