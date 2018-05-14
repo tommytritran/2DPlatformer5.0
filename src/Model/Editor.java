@@ -10,6 +10,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -97,13 +99,11 @@ public class Editor {
                     gc.fillRect(x*width,y*heigth,width,heigth);
                     break;
                 case 1:
-                    mapArray.get(y).set(x, 2);
-                    ImageView player = new ImageView(new File("src/timmy.png").toURI().toString());
-                    player.setViewport(new Rectangle2D(0,0,64,64));
-                    player.relocate(x*width,y*heigth);
-                    pane.getChildren().addAll(player);
-                    gc.setFill(Color.WHITE);
-                    gc.fillRect(x*width,y*heigth,x*width-1,y*heigth-1);
+                    mapArray.get(y).set(x,2);
+                    mapArray.get(y).set(x, 1);
+                    Image player = new Image(new File("src/block.png").toURI().toString());
+                    gc.setFill(new ImagePattern(player));
+                    gc.fillRect(x*width,y*heigth,width,heigth);
                     break;
                 case 2:
                     mapArray.get(x).set(y,3);
@@ -132,8 +132,7 @@ public class Editor {
             System.out.println(Arrays.toString(mapArray.toArray()));
         }catch (IndexOutOfBoundsException e){
             e.printStackTrace();
-        }
-
+        } 
     }
 
     public void loadMap(File file) throws IOException {
@@ -168,15 +167,19 @@ public class Editor {
                 switch (mapArray.get(i).get(j)){
                     case 1:
                         Image tile = new Image(new File("src/block.png").toURI().toString());
+                        gc.setFill(Color.WHITE);
+                        gc.fillRect(j*width,i*heigth,width,heigth);
                         gc.setFill(new ImagePattern(tile));
                         gc.fillRect(j*width,i*heigth,width,heigth);
                         break;
                     case 2:
                         ImageView player = new ImageView(new File("src/timmy.png").toURI().toString());
                         player.setViewport(new Rectangle2D(0,0,64,64));
+                        player.getImage();
                         player.relocate(j*width,i*heigth);
-                        pane.getChildren().addAll(player);
                         gc.setFill(Color.WHITE);
+                        gc.fillRect(j*width,i*heigth,width,heigth);
+                        gc.setFill(new ImagePattern(player.getImage()));
                         gc.fillRect(j*width,i*heigth,j*width-1,i*heigth-1);
                         break;
                 }

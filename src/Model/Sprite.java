@@ -66,8 +66,8 @@ public class Sprite extends Transition {
 
     public void initSprite() {
         sprite = new ImageView(new File(e.getTexture()).toURI().toString());
-        sprite.setFitHeight(50);
-        sprite.setFitWidth(50);
+        sprite.setFitHeight(49);
+        sprite.setFitWidth(49);
         sprite.setViewport(new Rectangle2D(e.getOffsetX(), e.getOffsetY(), e.getWidth(), e.getHeight()));
         offsetX = e.getOffsetX();
         offsetY = e.getOffsetY();
@@ -143,9 +143,9 @@ public class Sprite extends Transition {
     }
 
     public void die() {
-        physics.die();
-        System.out.println("die");
-        setIdleAnimation();
+            physics.die();
+            System.out.println("die");
+            setIdleAnimation();
     }
 
     public void deathAnimation() {
@@ -193,7 +193,7 @@ public class Sprite extends Transition {
         final private int TILESIZE = 50;      //def 50
         final private int BUFFER = 10;
 
-        private int jumpSpeed = 15;     //def 15
+        private int jumpSpeed = 18;     //def 15
         private int maxSpeed = 10;      //def 10
         private boolean jumpNextFrame = false;
         private boolean hasJumped = false;
@@ -259,10 +259,12 @@ public class Sprite extends Transition {
         }
 
         void die() {
-            e.setDeathCounter(e.getDeathCounter()+1);
-            outXpos = e.getStartingX();
-            outYpos = e.getStartingY();
-            speedX = speedY = 0;
+            if (e.getId() == ID.Player){
+                e.setDeathCounter(e.getDeathCounter()+1);
+                outXpos = e.getStartingX();
+                outYpos = e.getStartingY();
+                speedX = speedY = 0;
+            }
         }
 
 
@@ -326,7 +328,7 @@ public class Sprite extends Transition {
                     hasCollided = collisionRight(Xpos + TILESIZE, Ypos + BUFFER, Ypos + TILESIZE - BUFFER);
                 }
             } catch (IndexOutOfBoundsException e) {
-                if (outYpos > 600 || outXpos < 0) { //To the left or below the map
+                if (outYpos > 600 || outXpos < 0 ) { //To the left or below the map
                     die();
                 }
             }

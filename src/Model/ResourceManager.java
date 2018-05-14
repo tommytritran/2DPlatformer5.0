@@ -7,10 +7,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
 import java.io.*;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Iterator;
 
 public class ResourceManager {
@@ -131,7 +128,7 @@ public class ResourceManager {
                 }
                 if (mapArray.get(i).get(j) == 5) {
                     posXY = new double[]{(j * board.getTileSize()), (i * board.getTileSize()), 0, 0};
-                    Entity spike = new Entity(ID.spike);
+                    Entity spike = new Entity(ID.Spike);
                     spike.setPosXY(posXY);
                     Sprite enemySprite = new Sprite(pane, spike, mapArray);
                     addSprite(enemySprite);
@@ -176,7 +173,7 @@ public class ResourceManager {
                 Sprite enemy = new Sprite(pane, entityList.get(i), mapArray);
                 addSprite(enemy);
             }
-            if (entityList.get(i).getId() == ID.spike) {
+            if (entityList.get(i).getId() == ID.Spike) {
                 Sprite spike = new Sprite(pane, entityList.get(i), mapArray);
                 addSprite(spike);
             }

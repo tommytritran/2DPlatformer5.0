@@ -2,10 +2,9 @@ package Model;
 
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 enum ID {
-    Player, Enemy, spike, Enemy3, powerUP1, powerUP2, powerUP3, Tile, CheckPoint
+    Player, Enemy, Spike, Enemy3, powerUP1, powerUP2, powerUP3, Tile, CheckPoint
 }
 
 public class Entity implements Serializable {
@@ -44,7 +43,7 @@ public class Entity implements Serializable {
         if (this.getId() == ID.CheckPoint){
             return "src/pika1.jpg";
         }
-        if(this.getId() == ID.spike){
+        if(this.getId() == ID.Spike){
             return "src/spike11.png";
         }
         return null;
@@ -94,7 +93,7 @@ public class Entity implements Serializable {
     }
 
     public int getCount() {
-        if (this.getId() == ID.spike){
+        if (this.getId() == ID.Spike){
             this.count = 1;
             return count;
         }
@@ -106,7 +105,7 @@ public class Entity implements Serializable {
     }
 
     public int getColumns() {
-        if (this.getId() == ID.spike){
+        if (this.getId() == ID.Spike){
             this.columns = 1;
             return columns;
         }
@@ -118,7 +117,7 @@ public class Entity implements Serializable {
     }
 
     public int getOffsetX() {
-        if (this.getId() == ID.spike){
+        if (this.getId() == ID.Spike){
             this.offsetX = 0;
             return offsetX;
         }
@@ -130,7 +129,7 @@ public class Entity implements Serializable {
     }
 
     public int getOffsetY() {
-        if (this.getId() == ID.spike){
+        if (this.getId() == ID.Spike){
             this.offsetY = 0;
             return offsetY;
         }
@@ -142,7 +141,7 @@ public class Entity implements Serializable {
     }
 
     public int getWidth() {
-        if (this.getId() == ID.spike){
+        if (this.getId() == ID.Spike){
             this.width = 32;
             return width;
         }
@@ -154,7 +153,7 @@ public class Entity implements Serializable {
     }
 
     public int getHeight() {
-        if (this.getId() == ID.spike){
+        if (this.getId() == ID.Spike){
             this.height = 32;
             return height;
         }

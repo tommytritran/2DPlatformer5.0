@@ -1,17 +1,13 @@
 package Model;
 
 import javafx.animation.Animation;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 
-import javax.swing.text.View;
 import java.io.IOException;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 public class Game {
     private Pane pane;
@@ -141,6 +137,9 @@ public class Game {
                     spriteList.remove(sprite);
                     sprite.clearSprite();
                     playerSprite.powerUp1();
+                }
+                if (sprite.getID() == ID.Spike){
+                    playerSprite.die();
                 }
                 if (sprite.getID() == ID.CheckPoint) {
                     System.out.println("checkpoint");
