@@ -8,23 +8,20 @@ import java.util.List;
 public class Board implements Serializable {
     private String mapURL;
     private String bgURL;
-    private String tileURL;
+    private String tileURL = "src/block.png";
     private String soundURL;
-    private String playerURL;
     private String level;
     private double gameTime;
     private int entitySize = 50;
     private int tileSize = 50;
-    private double viewPortX;
-    private double viewPortY;
     ArrayList<Entity> entityList;
+    ArrayList<ArrayList<Integer>> mapArray;
 
     public Board(List<String> level) {
         this.mapURL = level.get(0);
         this.bgURL = level.get(1);
         this.tileURL = level.get(2);
         this.soundURL = level.get(3);
-        this.playerURL = level.get(4);
         this.level = level.get(5);
         gameTime = 0;
     }
@@ -32,10 +29,13 @@ public class Board implements Serializable {
     public Board() {
     }
 
-    public String getPlayerURL() {
-        return playerURL;
-    }
 
+    public void setMapArray(ArrayList<ArrayList<Integer>> mapArray){
+        this.mapArray = mapArray;
+    }
+    public ArrayList<ArrayList<Integer>> getMapArray(){
+        return this.mapArray;
+    }
     public int getTileSize() {
         return tileSize;
     }
@@ -60,13 +60,6 @@ public class Board implements Serializable {
         return level;
     }
 
-    public double getViewPortX() {
-        return viewPortX;
-    }
-
-    public double getViewPortY() {
-        return viewPortY;
-    }
     public int getEntitySize(){ return entitySize;}
 
     public ArrayList<Entity> getEntityList() {

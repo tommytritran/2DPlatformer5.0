@@ -40,10 +40,26 @@ public class Game {
     public Game(Pane gamePane, Board board) throws IOException {
         this.pane = gamePane;
         this.board = board;
-        initGame();
-        loadGameSave();
+        if(board.getMapArray() != null){
+            loadEditorMap();
+        }else{
+            initGame();
+            loadGameSave();
+        }
     }
+    public void loadEditorMap() throws IOException {
+        rm = new ResourceManager(pane, board);
+        soundHandler = new SoundHandler(board);
+        rm.renderBoard();
+        rm.loadEntity();
+        this.entityList = rm.getEntityList();
+        this.spriteList = rm.getSpriteList();
+        this.playerSprite = rm.getPlayerSprite();
+        setPlayerEntity();
+        vph = new ViewPortHandler(pane);
+        ch = new CollisionHandler(spriteList);
 
+    }
     public void initNewLevel() throws IOException {
         rm.removeAll();
         this.board = new Board(level2);
@@ -113,6 +129,8 @@ public class Game {
             if (ch.collCheck(playerSprite, sprite)) {
                 if (sprite.getID() == ID.Enemy) {
                     playerSprite.deathAnimation();
+                    sprite.clearSprite();
+                    spriteList.remove(sprite);
                 }
                 if (sprite.getID() == ID.powerUP1){
                     soundHandler.powerup1();

@@ -11,7 +11,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 
 import java.io.*;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -44,7 +43,7 @@ public class Editor {
         gc.fillRect(0,0,canvas.getWidth(),canvas.getHeight());
         for (int i = 0; i < arraySizeY; i++) {
             for (int j = 0; j < arraySizeX; j++) {
-                gc.strokeRect(i*width,j*heigth,width,heigth);
+                gc.strokeRect(j*width,i*heigth,width,heigth);
             }
         }
         System.out.println("draw");
@@ -84,26 +83,21 @@ public class Editor {
         pr.close();
     }
 
-    public Board playMap(){
-        this.board = new Board();
-        board.setMapURL("");
-        return this.board;
-    }
     public void drawTile(double posX, double posY)throws IndexOutOfBoundsException{
         int x = (int) (posX / width);
         int y = (int) (posY / heigth);
         System.out.println("X: " + x);
         System.out.println("Y: " + y);
         try{
-            switch (mapArray.get(x).get(y)){
+            switch (mapArray.get(y).get(x)){
                 case 0:
-                    mapArray.get(x).set(y, 1);
+                    mapArray.get(y).set(x, 1);
                     Image tile = new Image(new File("src/block.png").toURI().toString());
                     gc.setFill(new ImagePattern(tile));
                     gc.fillRect(x*width,y*heigth,width,heigth);
                     break;
                 case 1:
-                    mapArray.get(x).set(y, 2);
+                    mapArray.get(y).set(x, 2);
                     ImageView player = new ImageView(new File("src/timmy.png").toURI().toString());
                     player.setViewport(new Rectangle2D(0,0,64,64));
                     player.relocate(x*width,y*heigth);
@@ -172,21 +166,31 @@ public class Editor {
         for (int i = 0; i < mapArray.size(); i++) {
             for (int j = 0; j < mapArray.get(i).size(); j++) {
                 switch (mapArray.get(i).get(j)){
-                    case 0:
+                    case 1:
                         Image tile = new Image(new File("src/block.png").toURI().toString());
                         gc.setFill(new ImagePattern(tile));
-                        gc.fillRect(i*width,j*heigth,width,heigth);
+                        gc.fillRect(j*width,i*heigth,width,heigth);
                         break;
-                    case 1:
+                    case 2:
                         ImageView player = new ImageView(new File("src/timmy.png").toURI().toString());
                         player.setViewport(new Rectangle2D(0,0,64,64));
-                        player.relocate(i*width,j*heigth);
+                        player.relocate(j*width,i*heigth);
                         pane.getChildren().addAll(player);
                         gc.setFill(Color.WHITE);
-                        gc.fillRect(i*width,j*heigth,i*width-1,j*heigth-1);
+                        gc.fillRect(j*width,i*heigth,j*width-1,i*heigth-1);
                         break;
                 }
             }
         }
+    }
+
+    public Board playThisMap() throws FileNotFoundException {
+        if(this.mapArray != null){
+            saveMap();
+            board = new Board();
+            board.setMapArray(this.mapArray);
+            return this.board;
+        }
+        return null;
     }
 }

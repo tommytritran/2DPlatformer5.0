@@ -249,7 +249,12 @@ public class Controller implements Initializable {
     }
 
     public void playEditorMap() throws IOException {
-        loadGameSave();
+        this.board = editor.playThisMap();
+        game = new Game(gamePane,board);
+        editorPane.setVisible(false);
+        gamePane.setVisible(true);
+        startGame();
+        System.out.println("Editor play");
     }
 
     public void loadEditorMap() throws IOException {

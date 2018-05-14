@@ -28,6 +28,9 @@ public class ResourceManager {
     public ResourceManager(Pane pane, Board board) {
         this.pane = pane;
         this.board = board;
+        if (board.getMapArray() != null){
+            mapArray = board.getMapArray();
+        }
     }
 
     public ArrayList<ArrayList<Integer>> loadMap() throws IOException {
@@ -50,6 +53,7 @@ public class ResourceManager {
     }
 
     public void renderBoard() {
+        System.out.println("loaded array"+Arrays.toString(mapArray.toArray()));
         if (!tileList.isEmpty()) {
             Iterator<Rectangle> iter = tileList.iterator();
             while (iter.hasNext()) {
@@ -111,6 +115,7 @@ public class ResourceManager {
                 if (mapArray.get(i).get(j) == 2) {
                     posXY = new double[]{(j * board.getTileSize()), (i * board.getTileSize()), 0, 0};
                     Entity player = new Entity(ID.Player);
+                    System.out.println("player created");
                     player.setPosXY(posXY);
                     player.setStartingPos(posXY);
                     Sprite playerSprite = new Sprite(pane, player, mapArray);
@@ -175,6 +180,7 @@ public class ResourceManager {
 
 
     public Sprite getPlayerSprite() {
+        System.out.println("Player sprite returned");
         return this.player;
     }
 }
