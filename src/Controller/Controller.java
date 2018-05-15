@@ -26,12 +26,11 @@ public class Controller implements Initializable {
     @FXML
     Group group;
     @FXML
-    Label deathCounterLabel, timerLabel;
+    Label lifePointsLabel, timerLabel, warningLabel;
     @FXML
     TextField mapWidth, mapHeight;
     private SoundHandler soundHandler;
     private Editor editor;
-    private int deathCounter = 0;
     private double startTime = 0;
     private double endTime = 0;
     private double gameSaveTime = 0;
@@ -43,7 +42,6 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("Game started");
         soundHandler = new SoundHandler();
         soundHandler.bgStart();
         group.setFocusTraversable(true);
@@ -66,6 +64,7 @@ public class Controller implements Initializable {
         if(newGame && !running){
             newGame = false;
             running = true;
+            menuPane.setVisible(false);
             startPane.setVisible(false);
             gamePane.setVisible(true);
         }
@@ -75,16 +74,13 @@ public class Controller implements Initializable {
             menuPane.setVisible(false);
             gamePane.setVisible(true);
         }
-        System.out.println("New game started");
         game = new Game(gamePane);
         startGame();
     }
 
     public void startGame() {
         startTime = System.nanoTime();
-        deathCounter = game.getDeathCounter();
         setTime();
-        System.out.println("Starting game loop");
         HUD.setVisible(true);
         aTimer = new AnimationTimer() {
             @Override
@@ -139,11 +135,10 @@ public class Controller implements Initializable {
         try {
             FileOutputStream fileOut = new FileOutputStream("gameSave.bin");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            game.saveGame(deathCounter, getTime());
+            game.saveGame(game.getLifePoints(), getTime());
             out.writeObject(game.getBoard());
             out.close();
             fileOut.close();
-            System.out.printf("Game data is saved");
         } catch (IOException i) {
             i.printStackTrace();
         }
@@ -153,7 +148,6 @@ public class Controller implements Initializable {
         if (aTimer != null) {
             aTimer.stop();
             game.removeAll();
-            System.out.println("Game loop stoped");
         }
         FileChooser fc = new FileChooser();
         fc.setTitle("Choose game save");
@@ -162,16 +156,13 @@ public class Controller implements Initializable {
         if (file != null) {
             try {
                 FileInputStream fileIn = new FileInputStream(file);
-                System.out.println(file.toString());
                 ObjectInputStream in = new ObjectInputStream(fileIn);
                 this.board = (Board) in.readObject();
-                System.out.println("Game Loaded");
                 in.close();
                 fileIn.close();
             } catch (IOException i) {
                 i.printStackTrace();
             } catch (ClassNotFoundException c) {
-                System.out.println("Game class not found");
                 c.printStackTrace();
             }
             startPane.setVisible(false);
@@ -180,7 +171,6 @@ public class Controller implements Initializable {
             gameOverPane.setVisible(false);
             running = !running;
             game = new Game(gamePane, board);
-            System.out.println("Game save loaded");
             startGame();
         }
     }
@@ -200,14 +190,14 @@ public class Controller implements Initializable {
     }
 
     public void HUDhandler() {
-        if (game.getDeathCounter() > 15) {
+        if (game.getLifePoints() < 1) {
             running = !running;
             game.removeAll();
             gameOverPane.setVisible(true);
             gamePane.setVisible(false);
             aTimer.stop();
         } else {
-            deathCounterLabel.setText("" + game.getDeathCounter());
+            lifePointsLabel.setText("" + game.getLifePoints());
         }
         gameTimer();
     }
@@ -218,11 +208,12 @@ public class Controller implements Initializable {
     }
 
     public int getTime() {
-        return (int) (endTime - startTime);
+        int time = Integer.parseInt(timerLabel.getText());
+        return time;
     }
 
     public void setTime() {
-        gameSaveTime = (int) game.getGameTime() / 1000000000;
+        gameSaveTime = (int) game.getGameTime();
     }
 
     public void startEditor(){
@@ -250,11 +241,14 @@ public class Controller implements Initializable {
 
     public void playEditorMap() throws IOException {
         this.board = editor.playThisMap();
-        game = new Game(gamePane,board);
-        editorPane.setVisible(false);
-        gamePane.setVisible(true);
-        startGame();
-        System.out.println("Editor play");
+        if(board == null){
+            warningLabel.setText("Please add a player!");
+        }else{
+            game = new Game(gamePane,board);
+            editorPane.setVisible(false);
+            gamePane.setVisible(true);
+            startGame();
+        }
     }
 
     public void loadEditorMap() throws IOException {

@@ -18,13 +18,14 @@ public class Game {
     private CollisionHandler ch;
     private Sprite playerSprite;
     private Entity playerEntity;
+    private int level;
 
     private ArrayList<ArrayList<Integer>> mapArray = new ArrayList<>();
     private ArrayList<Sprite> spriteList = new ArrayList<>();
     private ArrayList<Entity> entityList = new ArrayList<>();
 
-    private List<String> level1 = Arrays.asList("src/boardArray.txt", "/res/bg.png", "src/block.png", "/res/Arcade-Puzzler.mp3", "SpriteSheetCat.png", "1");
-    private List<String> level2 = Arrays.asList("src/boardArray1.txt", "/res/bg.png", "src/block2.png", "/res/bgsound.wav", "SpriteSheetCat.png", "2");
+    private List<String> level1 = Arrays.asList("src/boardArray.txt", "src/block.png","1");
+    private List<String> level2 = Arrays.asList("src/boardArray1.txt", "src/block2.png","2");
 
     public Game(Pane gamePane) throws IOException {
         this.pane = gamePane;
@@ -55,6 +56,7 @@ public class Game {
         setPlayerEntity();
         vph = new ViewPortHandler(pane);
         ch = new CollisionHandler(spriteList);
+        startAnimation();
 
     }
 
@@ -136,13 +138,13 @@ public class Game {
                 if (sprite.getID() == ID.powerUP1) {
                     spriteList.remove(sprite);
                     sprite.clearSprite();
+                    soundHandler.powerup1();
                     playerSprite.powerUp1();
                 }
                 if (sprite.getID() == ID.Spike){
                     playerSprite.die();
                 }
                 if (sprite.getID() == ID.CheckPoint) {
-                    System.out.println("checkpoint");
                     initNewLevel();
                 }
             }
@@ -196,11 +198,11 @@ public class Game {
         return board;
     }
 
-    public void saveGame(int deathCounter, double time) {
+    public void saveGame(int lifePoints, double time) {
         for (int i = 0; i < entityList.size(); i++) {
             Entity tmp = entityList.get(i);
             if (tmp.getId() == ID.Player)
-                tmp.setDeathCounter(deathCounter);
+                tmp.setLifePoints(lifePoints);
         }
         board.setGameTime(time);
     }
@@ -209,9 +211,8 @@ public class Game {
         return board.getGameTime();
     }
 
-    public int getDeathCounter() {
-        Entity player = playerSprite.getEntity();
-        return player.getDeathCounter();
+    public int getLifePoints() {
+        return playerSprite.getLifePoints();
     }
 
 }

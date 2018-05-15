@@ -1,7 +1,6 @@
 package Model;
 
 
-import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.Transition;
 import javafx.geometry.Rectangle2D;
@@ -144,7 +143,6 @@ public class Sprite extends Transition {
 
     public void die() {
             physics.die();
-            System.out.println("die");
             setIdleAnimation();
     }
 
@@ -154,7 +152,9 @@ public class Sprite extends Transition {
         e.setOffsetY(64*4);
         
     }
-
+    public int getLifePoints(){
+        return e.getLifePoints();
+    }
     public void powerUp1() {
         physics.jumpSpeed = 20;
     }
@@ -260,7 +260,7 @@ public class Sprite extends Transition {
 
         void die() {
             if (e.getId() == ID.Player){
-                e.setDeathCounter(e.getDeathCounter()+1);
+                e.setLifePoints(e.getLifePoints()-1);
                 outXpos = e.getStartingX();
                 outYpos = e.getStartingY();
                 speedX = speedY = 0;

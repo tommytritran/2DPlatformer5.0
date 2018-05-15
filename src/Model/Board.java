@@ -11,7 +11,7 @@ public class Board implements Serializable {
     private String tileURL = "src/block.png";
     private String soundURL;
     private String level;
-    private double gameTime;
+    private double gameTime = 0;
     private int entitySize = 50;
     private int tileSize = 50;
     ArrayList<Entity> entityList;
@@ -19,11 +19,8 @@ public class Board implements Serializable {
 
     public Board(List<String> level) {
         this.mapURL = level.get(0);
-        this.bgURL = level.get(1);
-        this.tileURL = level.get(2);
-        this.soundURL = level.get(3);
-        this.level = level.get(5);
-        gameTime = 0;
+        this.tileURL = level.get(1);
+        this.level = level.get(2);
     }
 
     public Board() {

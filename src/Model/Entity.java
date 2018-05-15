@@ -23,7 +23,7 @@ public class Entity implements Serializable {
     protected int width = 64;
     protected int height = 64;
 
-    protected int deathCounter = 0;
+    protected int lifePoints = 15;
 
 
     public Entity(ID id) {
@@ -41,10 +41,10 @@ public class Entity implements Serializable {
             return "src/powerUP1.png";
         }
         if (this.getId() == ID.CheckPoint){
-            return "src/pika1.jpg";
+            return "src/checkPoint.png";
         }
         if(this.getId() == ID.Spike){
-            return "src/spike11.png";
+            return "src/spike.png";
         }
         return null;
     }
@@ -95,7 +95,9 @@ public class Entity implements Serializable {
     public int getCount() {
         if (this.getId() == ID.Spike){
             this.count = 1;
-            return count;
+        }
+        if(this.getId() == ID.CheckPoint){
+            this.count = 4;
         }
         return count;
     }
@@ -107,7 +109,9 @@ public class Entity implements Serializable {
     public int getColumns() {
         if (this.getId() == ID.Spike){
             this.columns = 1;
-            return columns;
+        }
+        if(this.getId() == ID.CheckPoint){
+            this.columns = 4;
         }
         return columns;
     }
@@ -117,9 +121,8 @@ public class Entity implements Serializable {
     }
 
     public int getOffsetX() {
-        if (this.getId() == ID.Spike){
+        if (this.getId() == ID.Spike || this.getId() == ID.CheckPoint){
             this.offsetX = 0;
-            return offsetX;
         }
         return offsetX;
     }
@@ -129,9 +132,8 @@ public class Entity implements Serializable {
     }
 
     public int getOffsetY() {
-        if (this.getId() == ID.Spike){
+        if (this.getId() == ID.Spike|| this.getId() == ID.CheckPoint){
             this.offsetY = 0;
-            return offsetY;
         }
         return offsetY;
     }
@@ -143,7 +145,9 @@ public class Entity implements Serializable {
     public int getWidth() {
         if (this.getId() == ID.Spike){
             this.width = 32;
-            return width;
+        }
+        if(this.getId() == ID.CheckPoint){
+            this.width = 64;
         }
         return width;
     }
@@ -155,7 +159,9 @@ public class Entity implements Serializable {
     public int getHeight() {
         if (this.getId() == ID.Spike){
             this.height = 32;
-            return height;
+        }
+        if(this.getId() == ID.CheckPoint){
+            this.height = 64;
         }
         return height;
     }
@@ -167,8 +173,8 @@ public class Entity implements Serializable {
         this.height = height;
     }
 
-    public int getDeathCounter() { return deathCounter; }
-    public void setDeathCounter(int death) {  this.deathCounter = death; }
+    public int getLifePoints() { return lifePoints; }
+    public void setLifePoints(int lifePoints) {  this.lifePoints = lifePoints; }
 
     public void setStartingPos(double[] posXY) {
         this.startingX = posXY[0];
