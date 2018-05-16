@@ -44,7 +44,7 @@ public class Sprite extends Transition {
         this.pane = gamePane;
         initSprite();
         this.physics = new Physics(board, e.getPosXY());
-        if (e.getId()== Enemy1){
+        if (e.getId()== ID.Enemy1 || e.getId() == ID.Enemy2){
             movingRight=true;
             physics.maxSpeed=3;
         }
@@ -155,8 +155,12 @@ public class Sprite extends Transition {
     public int getLifePoints(){
         return e.getLifePoints();
     }
-    public void powerUp1() {
+    public void powerUP1() {
         physics.jumpSpeed = 20;
+    }
+    public void powerUP2() {
+        physics.maxSpeed = 15;
+        physics.acceleration = 0.8;
     }
 
     public void setMovingLeft(boolean b) {
@@ -188,11 +192,11 @@ public class Sprite extends Transition {
     private class Physics {
 
         final private double GRAVITY = 0.75;     //def 0.75
-        final private double ACCELERATION = 0.6; //def 0.6
         final private double DECAY = 0.4;        //def 0.4
         final private int TILESIZE = 50;      //def 50
         final private int BUFFER = 10;
 
+        private double acceleration = 0.6; //def 0.6
         private int jumpSpeed = 18;     //def 15
         private int maxSpeed = 10;      //def 10
         private boolean jumpNextFrame = false;
@@ -227,11 +231,11 @@ public class Sprite extends Transition {
 
 
         private void updateRightSpeed() {
-            speedX = (speedX > maxSpeed) ? maxSpeed : speedX + ACCELERATION;
+            speedX = (speedX > maxSpeed) ? maxSpeed : speedX + acceleration;
         }
 
         private void updateLeftSpeed() {
-            speedX = (speedX < -maxSpeed) ? -maxSpeed : speedX - ACCELERATION;
+            speedX = (speedX < -maxSpeed) ? -maxSpeed : speedX - acceleration;
         }
 
         private void updateGravitySpeed() {
@@ -332,8 +336,13 @@ public class Sprite extends Transition {
                     die();
                 }
             }
-            if (e.getId() == Enemy1 && hasCollided){
+            if (e.getId() == ID.Enemy1 && hasCollided || e.getId() == ID.Enemy2 && hasCollided){
                 swapDirection();
+                if(e.getOffsetY() == 64 ) {
+                    e.setOffsetY(0);
+                } else {
+                    e.setOffsetY(64);
+                }
             }
             //speeds are updated
             decaySpeed();

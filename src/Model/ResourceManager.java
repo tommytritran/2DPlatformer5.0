@@ -136,7 +136,12 @@ public class ResourceManager {
                 }
                 if (mapArray.get(i).get(j) == 5) {
                     posXY = new double[]{(j * board.getTileSize()), (i * board.getTileSize()), 0, 0};
-                    Entity spikeEntity = new Entity(ID.Spike);
+                    Entity spikeEntity;
+                    if (board.getLevel() == 1){
+                        spikeEntity = new Entity(ID.Spike);
+                    }else{
+                        spikeEntity = new Entity(ID.Spike11);
+                    }
                     spikeEntity.setPosXY(posXY);
                     Sprite spikeSprite = new Sprite(pane, spikeEntity, mapArray);
                     addSprite(spikeSprite);

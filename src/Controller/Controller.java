@@ -36,7 +36,7 @@ public class Controller implements Initializable {
     private double startTime = 0;
     private double endTime = 0;
     private double gameSaveTime = 0;
-    private String bg1 = "/bg.png";
+    private String bg1 = "/res/bg.png";
     public Board board;
     public Game game;
     public boolean running = false;
@@ -95,8 +95,6 @@ public class Controller implements Initializable {
                     editorPane.setVisible(false);
                     HUD.setVisible(false);
                     startPane.setVisible(true);
-                    group.setFocusTraversable(true);
-                    group.requestFocus();
                 }
             }
         };

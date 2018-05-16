@@ -4,7 +4,7 @@ package Model;
 import java.io.Serializable;
 
 enum ID {
-    Player, Enemy1, Spike, Enemy2, powerUP1, PowerUP2, CheckPoint
+    Player, Enemy1, Spike, Spike11, Enemy2, powerUP1, PowerUP2, CheckPoint
 }
 
 public class Entity implements Serializable {
@@ -32,25 +32,28 @@ public class Entity implements Serializable {
 
     public String getTexture() {
         if (this.id == ID.Player) {
-            return "src/timmy.png";
+            return "src/res/timmy.png";
         }
         if (this.id == ID.Enemy1) {
-            return "src/enemy1.png";
+            return "src/res/zergsheet.png";
         }
         if (this.id == ID.Enemy2) {
-            return "src/enemy2.png";
+            return "src/res/dinosheet.png";
         }
         if (this.getId() == ID.Spike) {
-            return "src/spike.png";
+            return "src/res/spike.png";
+        }
+        if (this.getId() == ID.Spike11) {
+            return "src/res/spike11.png";
         }
         if (this.getId() == ID.powerUP1) {
-            return "src/powerUP1.png";
+            return "src/res/powerUP1.png";
         }
         if (this.getId() == ID.PowerUP2) {
-            return "src/powerUP2.png";
+            return "src/res/powerUP2.png";
         }
         if (this.getId() == ID.CheckPoint) {
-            return "src/checkPoint.png";
+            return "src/res/checkPoint.png";
         }
         return null;
     }
@@ -100,11 +103,14 @@ public class Entity implements Serializable {
     }
 
     public int getCount() {
-        if (this.getId() == ID.Spike) {
+        if (this.getId() == ID.Spike || this.getId() == ID.Spike11) {
             this.count = 1;
         }
-        if (this.getId() == ID.CheckPoint) {
+        if (this.getId() == ID.CheckPoint || this.getId() == ID.powerUP1 || this.getId() == ID.PowerUP2) {
             this.count = 4;
+        }
+        if (this.getId() == ID.Enemy1 || this.getId() == ID.Enemy2) {
+            this.count = 8;
         }
         return count;
     }
@@ -114,11 +120,14 @@ public class Entity implements Serializable {
     }
 
     public int getColumns() {
-        if (this.getId() == ID.Spike) {
+        if (this.getId() == ID.Spike || this.getId() == ID.Spike11) {
             this.columns = 1;
         }
-        if (this.getId() == ID.CheckPoint) {
+        if (this.getId() == ID.CheckPoint || this.getId() == ID.powerUP1 || this.getId() == ID.PowerUP2) {
             this.columns = 4;
+        }
+        if (this.getId() == ID.Enemy1 || this.getId() == ID.Enemy2) {
+            this.columns = 8;
         }
         return columns;
     }
@@ -139,7 +148,7 @@ public class Entity implements Serializable {
     }
 
     public int getOffsetY() {
-        if (this.getId() == ID.Spike || this.getId() == ID.CheckPoint) {
+        if (this.getId() == ID.Spike || this.getId() == ID.CheckPoint || this.getId() == ID.Spike11) {
             this.offsetY = 0;
         }
         return offsetY;
@@ -150,10 +159,13 @@ public class Entity implements Serializable {
     }
 
     public int getWidth() {
-        if (this.getId() == ID.Spike) {
+        if (this.getId() == ID.Spike || getId() == ID.Spike11) {
             this.width = 32;
         }
-        if (this.getId() == ID.CheckPoint) {
+        if (this.getId() == ID.CheckPoint || this.getId() == ID.powerUP1 || this.getId() == ID.PowerUP2) {
+            this.width = 64;
+        }
+        if (this.getId() == ID.Enemy1 || this.getId() == ID.Enemy2) {
             this.width = 64;
         }
         return width;
@@ -164,10 +176,13 @@ public class Entity implements Serializable {
     }
 
     public int getHeight() {
-        if (this.getId() == ID.Spike) {
+        if (this.getId() == ID.Spike || this.getId() == ID.Spike11) {
             this.height = 32;
         }
-        if (this.getId() == ID.CheckPoint) {
+        if (this.getId() == ID.CheckPoint || this.getId() == ID.powerUP1 || this.getId() == ID.PowerUP2) {
+            this.height = 64;
+        }
+        if (this.getId() == ID.Enemy1 || this.getId() == ID.Enemy2) {
             this.height = 64;
         }
         return height;

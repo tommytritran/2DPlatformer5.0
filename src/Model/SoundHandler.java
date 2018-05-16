@@ -32,7 +32,23 @@ public class SoundHandler {
     }
 
     public void powerup1(){
+        System.out.println("powerup1 sound");
         path = getClass().getResource("/res/powerup1.mp3");
+        audioClip = new AudioClip(path.toString());
+        audioClip.play();
+    }
+
+
+    public void dieSound() {
+        System.out.println("die sound");
+        path = getClass().getResource("/res/powerdown1.mp3");
+        audioClip = new AudioClip(path.toString());
+        audioClip.play();
+    }
+
+    public void checkPoint() {
+        System.out.println("checkpoint sound");
+        path = getClass().getResource("/res/checkpoint.mp3");
         audioClip = new AudioClip(path.toString());
         audioClip.play();
     }
