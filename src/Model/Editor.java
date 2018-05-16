@@ -66,7 +66,7 @@ public class Editor {
         }
     }
     public void saveMap() throws FileNotFoundException {
-        PrintWriter pr = new PrintWriter("src/editorMap.txt");
+        PrintWriter pr = new PrintWriter("editorMap.txt");
 
         if(mapArray != null){
             for (int i = 0; i <mapArray.size() ; i++) {
@@ -88,7 +88,7 @@ public class Editor {
                     mapArray.get(y).set(x, 1);
                     gc.setFill(Color.WHITE);
                     gc.fillRect(x*width,y* height,width-1, height-1);
-                    Image tile = new Image(new File("src/res/block.png").toURI().toString());
+                    Image tile = new Image(getClass().getResource("/res/block.png").toString());
                     gc.setFill(new ImagePattern(tile));
                     gc.fillRect(x*width,y* height,width, height);
                     break;
@@ -97,15 +97,15 @@ public class Editor {
                         mapArray.get(y).set(x,2);
                         gc.setFill(Color.WHITE);
                         gc.fillRect(x*width,y* height,width-1, height-1);
-                        Image player = new Image(new File("src/res/editorTimmy.png").toURI().toString());
+                        Image player = new Image(getClass().getResource("/res/editorTimmy.png").toString());
                         gc.setFill(new ImagePattern(player));
                         gc.fillRect(x*width,y* height,width, height);
                     }else{
                         mapArray.get(y).set(x,3);
                         gc.setFill(Color.WHITE);
                         gc.fillRect(x*width,y* height,width-1, height-1);
-                        Image enemey1 = new Image(new File("src/res/editorEnemy1.png").toURI().toString());
-                        gc.setFill(new ImagePattern(enemey1));
+                        Image enemy1 = new Image(getClass().getResource("/res/editorEnemy1.png").toString());
+                        gc.setFill(new ImagePattern(enemy1));
                         gc.fillRect(x*width,y* height,width, height);
                     }
                     break;
@@ -113,7 +113,7 @@ public class Editor {
                     mapArray.get(y).set(x, 3);
                     gc.setFill(Color.WHITE);
                     gc.fillRect(x*width,y* height,width-1, height-1);
-                    Image enemy1 = new Image(new File("src/res/editorEnemy1.png").toURI().toString());
+                    Image enemy1 = new Image(getClass().getResource("/res/editorEnemy1.png").toString());
                     gc.setFill(new ImagePattern(enemy1));
                     gc.fillRect(x*width,y* height,width, height);
                     break;
@@ -121,7 +121,7 @@ public class Editor {
                     mapArray.get(y).set(x, 4);
                     gc.setFill(Color.WHITE);
                     gc.fillRect(x*width,y* height,width-1, height-1);
-                    Image enemy2 = new Image(new File("src/res/editorEnemy2.png").toURI().toString());
+                    Image enemy2 = new Image(getClass().getResource("/res/editorEnemy2.png").toString());
                     gc.setFill(new ImagePattern(enemy2));
                     gc.fillRect(x*width,y* height,width, height);
                     break;
@@ -129,7 +129,7 @@ public class Editor {
                     mapArray.get(y).set(x, 5);
                     gc.setFill(Color.WHITE);
                     gc.fillRect(x*width,y* height,width-1, height-1);
-                    Image spike = new Image(new File("src/res/spike.png").toURI().toString());
+                    Image spike = new Image(getClass().getResource("/res/spike.png").toString());
                     gc.setFill(new ImagePattern(spike));
                     gc.fillRect(x*width,y* height,width, height);
                     break;
@@ -137,7 +137,7 @@ public class Editor {
                     mapArray.get(y).set(x, 6);
                     gc.setFill(Color.WHITE);
                     gc.fillRect(x*width,y* height,width-1, height-1);
-                    Image powerUP1 = new Image(new File("src/res/editorPowerUP1.png").toURI().toString());
+                    Image powerUP1 = new Image(getClass().getResource("/res/editorPowerUP1.png").toString());
                     gc.setFill(new ImagePattern(powerUP1));
                     gc.fillRect(x*width,y* height,width, height);
                     break;
@@ -145,7 +145,7 @@ public class Editor {
                     mapArray.get(y).set(x, 7);
                     gc.setFill(Color.WHITE);
                     gc.fillRect(x*width,y* height,width-1, height-1);
-                    Image powerUP2 = new Image(new File("src/res/editorPowerUP2.png").toURI().toString());
+                    Image powerUP2 = new Image(getClass().getResource("/res/editorPowerUP2.png").toString());
                     gc.setFill(new ImagePattern(powerUP2));
                     gc.fillRect(x*width,y* height,width, height);
                     break;
@@ -201,7 +201,7 @@ public class Editor {
             for (int j = 0; j < mapArray.get(i).size(); j++) {
                 switch (mapArray.get(i).get(j)){
                     case 1:
-                        Image tile = new Image(new File("src/res/block.png").toURI().toString());
+                        Image tile = new Image(getClass().getResource("/res/block.png").toString());
                         gc.setFill(Color.WHITE);
                         gc.fillRect(j*width,i* height,width-1, height-1);
                         gc.setFill(new ImagePattern(tile));
@@ -211,12 +211,12 @@ public class Editor {
                         System.out.println("player loaded");
                         gc.setFill(Color.WHITE);
                         gc.fillRect(j*width,i* height,width-1, height-1);
-                        Image player = new Image(new File("src/res/editorTimmy.png").toURI().toString());
+                        Image player = new Image(getClass().getResource("/res/editorTimmy.png").toString());
                         gc.setFill(new ImagePattern(player));
                         gc.fillRect(j*width,i* height,width, height);
                         break;
                     case 3:
-                        ImageView enemy1 = new ImageView(new File("src/res/editorEnemy1.png").toURI().toString());
+                        ImageView enemy1 = new ImageView(getClass().getResource("/res/editorEnemy1.png").toString());
                         enemy1.setViewport(new Rectangle2D(0,0,64,64));
                         enemy1.getImage();
                         enemy1.relocate(j*width,i* height);
@@ -225,7 +225,7 @@ public class Editor {
                         gc.setFill(new ImagePattern(enemy1.getImage()));
                         gc.fillRect(j*width,i* height,j*width-1,i* height -1);
                     case 4:
-                        ImageView enemy2 = new ImageView(new File("src/res/editorEnemy2.png").toURI().toString());
+                        ImageView enemy2 = new ImageView(getClass().getResource("/res/editorEnemy2.png").toString());
                         enemy2.setViewport(new Rectangle2D(0,0,64,64));
                         enemy2.getImage();
                         enemy2.relocate(j*width,i* height);
@@ -234,7 +234,7 @@ public class Editor {
                         gc.setFill(new ImagePattern(enemy2.getImage()));
                         gc.fillRect(j*width,i* height,j*width-1,i* height -1);
                     case 5:
-                        ImageView spike = new ImageView(new File("src/res/spike.png").toURI().toString());
+                        ImageView spike = new ImageView(getClass().getResource("/res/spike.png").toString());
                         spike.setViewport(new Rectangle2D(0,0,64,64));
                         spike.getImage();
                         spike.relocate(j*width,i* height);
@@ -243,7 +243,7 @@ public class Editor {
                         gc.setFill(new ImagePattern(spike.getImage()));
                         gc.fillRect(j*width,i* height,j*width-1,i* height -1);
                     case 6:
-                        ImageView powerUP1 = new ImageView(new File("src/res/editorPowerUP1.png").toURI().toString());
+                        ImageView powerUP1 = new ImageView(getClass().getResource("/res/editorPowerUP1.png").toString());
                         powerUP1.setViewport(new Rectangle2D(0,0,64,64));
                         powerUP1.getImage();
                         powerUP1.relocate(j*width,i* height);
@@ -252,7 +252,7 @@ public class Editor {
                         gc.setFill(new ImagePattern(powerUP1.getImage()));
                         gc.fillRect(j*width,i* height,j*width-1,i* height -1);
                     case 7:
-                        ImageView powerUP2 = new ImageView(new File("src/res/editorPowerUP2.png").toURI().toString());
+                        ImageView powerUP2 = new ImageView(getClass().getResource("/res/editorPowerUP2.png").toString());
                         powerUP2.setViewport(new Rectangle2D(0,0,64,64));
                         powerUP2.getImage();
                         powerUP2.relocate(j*width,i* height);

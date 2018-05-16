@@ -64,7 +64,7 @@ public class Sprite extends Transition {
     }
 
     public void initSprite() {
-        sprite = new ImageView(new File(e.getTexture()).toURI().toString());
+        sprite = new ImageView(getClass().getResource(e.getTexture()).toString());
         sprite.setFitHeight(49);
         sprite.setFitWidth(49);
         sprite.setViewport(new Rectangle2D(e.getOffsetX(), e.getOffsetY(), e.getWidth(), e.getHeight()));
@@ -197,7 +197,7 @@ public class Sprite extends Transition {
         final private int BUFFER = 10;
 
         private double acceleration = 0.6; //def 0.6
-        private int jumpSpeed = 18;     //def 15
+        private int jumpSpeed = 15;     //def 15
         private int maxSpeed = 10;      //def 10
         private boolean jumpNextFrame = false;
         private boolean hasJumped = false;
@@ -267,6 +267,9 @@ public class Sprite extends Transition {
                 e.setLifePoints(e.getLifePoints()-1);
                 outXpos = e.getStartingX();
                 outYpos = e.getStartingY();
+                jumpSpeed = 15;
+                acceleration = 0.6;
+                maxSpeed = 10;
                 speedX = speedY = 0;
             }
         }

@@ -32,7 +32,8 @@ public class ResourceManager {
 
     public ArrayList<ArrayList<Integer>> loadMap() throws IOException {
         String currLine;
-        BufferedReader br = new BufferedReader(new FileReader(new File(board.getMapURL())));
+        InputStream in = getClass().getResourceAsStream(board.getMapURL());
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
         while ((currLine = br.readLine()) != null) {
             ArrayList<Integer> row = new ArrayList<>();
             String[] values = currLine.trim().split(" ");
@@ -57,7 +58,7 @@ public class ResourceManager {
             }
         }
         tileList.clear();
-        Image tile = new Image(new File(board.getTileURL()).toURI().toString());
+        Image tile = new Image(getClass().getResource(board.getTileURL()).toString());
         for (int i = 0; i < mapArray.size(); i++) {
             for (int j = 0; j < mapArray.get(i).size(); j++) {
                 if (mapArray.get(i).get(j) == 1) {

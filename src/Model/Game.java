@@ -27,13 +27,13 @@ public class Game {
     private ArrayList<Sprite> spriteList = new ArrayList<>();
     private ArrayList<Entity> entityList = new ArrayList<>();
 
-    private List<String> level1 = Arrays.asList("src/boardArray.txt", "src/res/block.png","1");
-    private List<String> level2 = Arrays.asList("src/boardArray1.txt", "src/res/block2.png","2");
+    private List<String> level1 = Arrays.asList("/boardArray.txt", "/res/block.png","1");
+    private List<String> level2 = Arrays.asList("/boardArray1.txt", "/res/block2.png","2");
 
     public Game(Pane gamePane, Pane mainPane) throws IOException {
         this.pane = gamePane;
         this.mainPane = mainPane;
-        this.board = new Board(level2);
+        this.board = new Board(level1);
         this.level = board.getLevel();
         initGame();
         loadNewGame();
@@ -153,14 +153,10 @@ public class Game {
                     playerSprite.die();
                 }
                 if (sprite.getID() == ID.powerUP1) {
-                    spriteList.remove(sprite);
-                    sprite.clearSprite();
                     soundHandler.powerup1();
                     playerSprite.powerUP1();
                 }
                 if (sprite.getID() == ID.PowerUP2) {
-                    spriteList.remove(sprite);
-                    sprite.clearSprite();
                     soundHandler.powerup1();
                     playerSprite.powerUP2();
                 }

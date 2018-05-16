@@ -32,28 +32,28 @@ public class Entity implements Serializable {
 
     public String getTexture() {
         if (this.id == ID.Player) {
-            return "src/res/timmy.png";
+            return "/res/timmy.png";
         }
         if (this.id == ID.Enemy1) {
-            return "src/res/zergsheet.png";
+            return "/res/zergsheet.png";
         }
         if (this.id == ID.Enemy2) {
-            return "src/res/dinosheet.png";
+            return "/res/dinosheet.png";
         }
         if (this.getId() == ID.Spike) {
-            return "src/res/spike.png";
+            return "/res/spike.png";
         }
         if (this.getId() == ID.Spike11) {
-            return "src/res/spike11.png";
+            return "/res/spike11.png";
         }
         if (this.getId() == ID.powerUP1) {
-            return "src/res/powerUP1.png";
+            return "/res/powerUP1.png";
         }
         if (this.getId() == ID.PowerUP2) {
-            return "src/res/powerUP2.png";
+            return "/res/powerUP2.png";
         }
         if (this.getId() == ID.CheckPoint) {
-            return "src/res/checkPoint.png";
+            return "/res/checkPoint.png";
         }
         return null;
     }

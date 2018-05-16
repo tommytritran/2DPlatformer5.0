@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Board implements Serializable {
     private String mapURL;
-    private String tileURL = "src/res/block.png";
+    private String tileURL = "/res/block.png";
     private String level = "1";
     private double gameTime = 0;
     private int entitySize = 50;
