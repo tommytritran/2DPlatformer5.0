@@ -7,19 +7,30 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
-
 import java.io.File;
 import java.util.ArrayList;
 
-import static Model.ID.Enemy1;
+/**
+ * This class handles the behaviour of our sprites and animation
+ * 
+ * @author Carlo Nguyen
+ * @author Tommy Tran
+ * @author Marius Haugen
+ */
 
 public class Sprite extends Transition {
+	
+	/**
+	 *  Objects
+	 */
     ImageView sprite;
     Entity e;
     Pane pane;
-
     Physics physics;
 
+    /**
+     * Data field
+     */
     private boolean movingLeft = false;
     private boolean movingRight = false;
 
@@ -31,7 +42,15 @@ public class Sprite extends Transition {
     private int width;
     private int height;
     private int lastIndex;
+    
 
+    /**
+     * This is the constructor of the class Sprite
+     * 
+     * @param first argument is a JavaFX pane
+     * @param second argument is an Entity object
+     * @param third argument is the an Array-representation of the gameboard
+     */
     public Sprite(Pane gamePane, Entity e, ArrayList<ArrayList<Integer>> board) {
         this.e = e;
         this.offsetX = e.getOffsetX();
@@ -52,6 +71,12 @@ public class Sprite extends Transition {
         setInterpolator(Interpolator.LINEAR);
     }
 
+    /**
+     * It defines actual behavior of the animation. The method interpolate() is called by the runtime in every frame while the animation is playing. 
+     * The value 0.0 marks the start of the animation, the value 1.0 the end.
+     *  
+     * @param A double value between 0.0 and 1.0 (both inclusive) is passed in, which specifies the current position.
+     */
     @Override
     protected void interpolate(double frac) {
         final int index = Math.min((int) Math.floor(e.getCount() * frac), e.getCount() - 1);
@@ -62,7 +87,12 @@ public class Sprite extends Transition {
             lastIndex = index;
         }
     }
-
+    
+    /**
+     * This method initiates the sprite ImageView object. 
+     * Sets the height and width and the starting frame of the spritesheet.
+     * Executes render() method and adds the object to pane.
+     */
     public void initSprite() {
         sprite = new ImageView(new File(e.getTexture()).toURI().toString());
         sprite.setFitHeight(49);
@@ -75,36 +105,65 @@ public class Sprite extends Transition {
         pane.getChildren().addAll(sprite);
     }
 
+    /**
+     * This methods sets the X and Y position of the sprite
+     */
     public void render() {
         sprite.setTranslateX(e.getPosX());
         sprite.setTranslateY(e.getPosY());
     }
 
+    /**
+     * ???
+     * 
+     * @param pos
+     */
     public void setEntityPosInfo(double[] pos) {
         e.setPosXY(pos);
     }
 
+    /**
+     * ???
+     * 
+     * @return
+     */
     public double[] getEntityCurrPos() {
         e.setPosX(sprite.getTranslateX());
         e.setPosY(sprite.getTranslateY());
         return e.getPosXY();
     }
 
+    /**
+     * @return an object of type Entity
+     */
     public Entity getEntity(){
         return e;
     }
+    
+    /**
+     * @return the ID of the respective entity
+     */
     public ID getID() {
         return e.getId();
     }
 
+    /**
+     * @return an ImageView of the sprite
+     */
     public ImageView getSprite() {
         return sprite;
     }
 
+    /**
+     * This method removes a sprite from JavaFX pane
+     */
     public void clearSprite() {
         pane.getChildren().remove(this.sprite);
     }
 
+    /**
+     * This method sets the Idle animation to our player
+     */
     public void setIdleAnimation() {
         if (e.getId() == ID.Player) {
             e.setCount(4);
@@ -114,6 +173,9 @@ public class Sprite extends Transition {
         }
     }
 
+    /**
+     * This method sets the animation of "walking right" to our player
+     */
     public void walkRight() {
         if (e.getId() == ID.Player) {
             e.setCount(4);
@@ -123,6 +185,9 @@ public class Sprite extends Transition {
         }
     }
 
+    /**
+     * This method sets the animation of "walking left" to our player
+     */
     public void walkLeft() {
         if (e.getId() == ID.Player) {
             e.setCount(6);
@@ -132,6 +197,9 @@ public class Sprite extends Transition {
         }
     }
 
+    /**
+     * This method sets the animation of "jump" to our player
+     */    
     public void animateJump() {
         if (e.getId() == ID.Player) {
             e.setCount(1);
@@ -140,7 +208,7 @@ public class Sprite extends Transition {
             e.setOffsetY(64*3);
         }
     }
-
+    
     public void die() {
             physics.die();
             setIdleAnimation();
@@ -152,32 +220,62 @@ public class Sprite extends Transition {
         e.setOffsetY(64*4);
         
     }
+    
+    /**
+     * This method gets the current life points to our player and returns the value
+     * @return the value points of life to our player
+     */
     public int getLifePoints(){
         return e.getLifePoints();
     }
+    
+    /**
+     * This method sets the jumpspeed to 20 when player consumes an item ingame
+     */
     public void powerUP1() {
         physics.jumpSpeed = 20;
     }
+    
+    /**
+     * This method sets(increases) the maxspeed and acceleration when player consumes an item ingame
+     */
     public void powerUP2() {
         physics.maxSpeed = 15;
         physics.acceleration = 0.8;
     }
 
+    /**
+     * This method sets a boolean value to movingLeft
+     * @param b
+     */
     public void setMovingLeft(boolean b) {
         movingLeft = b;
     }
 
+    /**
+     * This method sets a boolean value to movingRight
+     * @param b
+     */
     public void setMovingRight(boolean b) {
         movingRight = b;
     }
 
+    /**
+     * This method gets the boolean value to movingLeft
+     * @param b
+     */
     public boolean getMovingLeft() {
         return movingLeft;
     }
 
+    /**
+     * This method gets the boolean value to movingLeft
+     * @param b
+     */
     public boolean getMovingRight() {
         return movingRight;
     }
+
 
     public void updatePosition() {
         setEntityPosInfo(
@@ -189,6 +287,14 @@ public class Sprite extends Transition {
         physics.jumpNextFrame = true;
     }
 
+    /**
+     * This class handles the behaviour of our sprites as well as physics
+     * 
+     * @author Carlo Nguyen
+     * @author Tommy Tran
+     * @author Marius Haugen
+     */
+    
     private class Physics {
 
         final private double GRAVITY = 0.75;     //def 0.75

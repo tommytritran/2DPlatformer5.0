@@ -2,6 +2,14 @@ package Model;
 
 import java.util.ArrayList;
 
+/**
+ * Comments
+ * 
+ * @author Carlo Nguyen
+ * @author Tommy Tran
+ * @author Marius Haugen
+ */
+
 public class CollisionHandler {
     ArrayList<Sprite> spriteList;
 

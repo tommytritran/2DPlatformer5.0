@@ -1,9 +1,16 @@
 package Model;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * Comments
+ * 
+ * @author Carlo Nguyen
+ * @author Tommy Tran
+ * @author Marius Haugen
+ */
 
 public class Board implements Serializable {
     private String mapURL;

@@ -3,10 +3,15 @@ package Model;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.util.Duration;
-
-import java.io.File;
 import java.net.URL;
+
+/**
+ * Comments
+ * 
+ * @author Carlo Nguyen
+ * @author Tommy Tran
+ * @author Marius Haugen
+ */
 
 
 public class SoundHandler {

@@ -11,8 +11,13 @@ import javafx.scene.paint.ImagePattern;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-
+/**
+ * Comments
+ * 
+ * @author Carlo Nguyen
+ * @author Tommy Tran
+ * @author Marius Haugen
+ */
 
 public class Editor {
     Pane pane;

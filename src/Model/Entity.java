@@ -1,7 +1,14 @@
 package Model;
 
-
 import java.io.Serializable;
+
+/**
+ * Comments
+ * 
+ * @author Carlo Nguyen
+ * @author Tommy Tran
+ * @author Marius Haugen
+ */
 
 enum ID {
     Player, Enemy1, Spike, Spike11, Enemy2, powerUP1, PowerUP2, CheckPoint

@@ -1,6 +1,5 @@
 package Model;
 
-
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
@@ -9,6 +8,15 @@ import javafx.scene.shape.Rectangle;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+/**
+ * Comments
+ * 
+ * @author Carlo Nguyen
+ * @author Tommy Tran
+ * @author Marius Haugen
+ */
+
 
 public class ResourceManager {
     private Pane pane;

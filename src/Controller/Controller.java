@@ -22,7 +22,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+/**
+ * Comments
+ * 
+ * @author Carlo Nguyen
+ * @author Tommy Tran
+ * @author Marius Haugen
+ */
+
 public class Controller implements Initializable {
+	
+	// Data field to FXML
     @FXML
     Pane mainPane, startPane, menuPane, gamePane, HUD, gameOverPane, editorPane;
     @FXML
@@ -31,6 +41,8 @@ public class Controller implements Initializable {
     Label lifePointsLabel, timerLabel, warningLabel, startPaneErrorLabel, editorErrorLabel;
     @FXML
     TextField mapWidth, mapHeight;
+    
+    // Data field
     private SoundHandler soundHandler;
     private Editor editor;
     private double startTime = 0;

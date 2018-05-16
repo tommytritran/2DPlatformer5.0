@@ -2,13 +2,17 @@ package Model;
 
 import javafx.scene.layout.Pane;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+/**
+ * This class handles the camera/viewport
+ * 
+ * @author Carlo Nguyen
+ * @author Tommy Tran
+ * @author Marius Haugen
+ */
 
 public class ViewPortHandler {
     private Pane pane;
 
-    //Thresholds for the center box in which the player can move freely before the camera starts following
     private final double RIGHT = 500;
     private final double LEFT = 300;
     private final double UP = 200;
@@ -19,6 +23,12 @@ public class ViewPortHandler {
         this.pane = pane;
     }
 
+    /**
+     * This method consistently seeks the position of the player. 
+     * Thresholds for the center box in which the player can move freely before the camera starts following
+     * 
+     * @param the position of the player
+     */
     public void tick(double[] playerPos) {
 
         if (-playerPos[0] < pane.getTranslateX()-RIGHT) {
