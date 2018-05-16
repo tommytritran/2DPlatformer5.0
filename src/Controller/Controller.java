@@ -18,7 +18,10 @@ import javafx.util.converter.NumberStringConverter;
 
 import java.io.*;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 public class Controller implements Initializable {
     @FXML
@@ -26,7 +29,7 @@ public class Controller implements Initializable {
     @FXML
     Group group;
     @FXML
-    Label lifePointsLabel, timerLabel, warningLabel, startPaneErrorLabel,editorErrorLabel;
+    Label lifePointsLabel, timerLabel, warningLabel, startPaneErrorLabel, editorErrorLabel;
     @FXML
     TextField mapWidth, mapHeight;
     private SoundHandler soundHandler;
@@ -71,34 +74,34 @@ public class Controller implements Initializable {
     }
 
     public void startGame() {
-            startTime = System.nanoTime();
-            setTime();
-            HUD.setVisible(true);
-            aTimer = new AnimationTimer() {
-                @Override
-                public void handle(long now) {
-                    try {
-                        game.tick();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    game.render();
-                    try {
-                        HUDhandler();
-                    }catch (NullPointerException e){
-                        startPaneErrorLabel.setText("Error cant load game");
-                        menuPane.setVisible(false);
-                        gameOverPane.setVisible(false);
-                        gamePane.setVisible(false);
-                        editorPane.setVisible(false);
-                        HUD.setVisible(false);
-                        startPane.setVisible(true);
-                        group.setFocusTraversable(true);
-                        group.requestFocus();
-                    }
+        startTime = System.nanoTime();
+        setTime();
+        HUD.setVisible(true);
+        aTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                try {
+                    game.tick();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            };
-            aTimer.start();
+                game.render();
+                try {
+                    HUDhandler();
+                } catch (NullPointerException e) {
+                    startPaneErrorLabel.setText("Error cant load game");
+                    menuPane.setVisible(false);
+                    gameOverPane.setVisible(false);
+                    gamePane.setVisible(false);
+                    editorPane.setVisible(false);
+                    HUD.setVisible(false);
+                    startPane.setVisible(true);
+                    group.setFocusTraversable(true);
+                    group.requestFocus();
+                }
+            }
+        };
+        aTimer.start();
     }
 
     public void exitGame() {
@@ -137,7 +140,11 @@ public class Controller implements Initializable {
 
     public void saveGame() {
         try {
-            FileOutputStream fileOut = new FileOutputStream("gameSave.bin");
+            Date dNow = new Date();
+            SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yy-ss");
+            String fileName = ft.format(dNow);
+            fileName += ".bin";
+            FileOutputStream fileOut = new FileOutputStream(fileName);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             game.saveGame(game.getLifePoints(), getTime());
             out.writeObject(game.getBoard());
@@ -154,6 +161,8 @@ public class Controller implements Initializable {
             game.removeAll();
         }
         FileChooser fc = new FileChooser();
+        FileChooser.ExtensionFilter fcFilter = new FileChooser.ExtensionFilter("BIN Files (.bin)", "*.bin");
+        fc.getExtensionFilters().add(fcFilter);
         fc.setTitle("Choose game save");
         fc.setInitialDirectory(new File("./"));
         File file = fc.showOpenDialog(startPane.getParent().getScene().getWindow());
@@ -189,7 +198,7 @@ public class Controller implements Initializable {
                 startPane.setVisible(false);
                 gamePane.setVisible(true);
                 startGame();
-            }catch (NullPointerException e){
+            } catch (NullPointerException e) {
                 startPaneErrorLabel.setText("Error cant load game");
                 menuPane.setVisible(false);
                 gameOverPane.setVisible(false);
@@ -258,11 +267,11 @@ public class Controller implements Initializable {
     }
 
     public void drawTile(MouseEvent e) {
-        try{
+        try {
             editor.drawTile(e.getX(), e.getY());
-        }catch (IndexOutOfBoundsException exception){
+        } catch (IndexOutOfBoundsException exception) {
             editorErrorLabel.setText("Please enter a valid map size");
-        }catch (NullPointerException ex){
+        } catch (NullPointerException ex) {
             editorErrorLabel.setText("Please enter a valid map size");
         }
     }

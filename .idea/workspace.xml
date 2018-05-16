@@ -2,15 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f7ba35ad-baae-497e-b854-0775ffb1ac9e" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameSave.bin" beforeDir="false" afterPath="$PROJECT_DIR$/gameSave.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/2DPlatformer5.0/Controller/Controller$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/2DPlatformer5.0/Controller/Controller$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/2DPlatformer5.0/Controller/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/2DPlatformer5.0/Controller/Controller.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/2DPlatformer5.0/boardArray.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/2DPlatformer5.0/boardArray.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gameSave.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/2DPlatformer5.0/gameSave.bin" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/GUI.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/GUI.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/boardArray.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/boardArray.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/editorMap.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/editorMap.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gameSave.bin" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -43,8 +39,8 @@
       <file leaf-file-name="Entity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Model/Entity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="106">
-              <caret line="152" column="5" lean-forward="true" selection-start-line="152" selection-start-column="5" selection-end-line="154" selection-end-column="9" />
+            <state relative-caret-position="2142">
+              <caret line="152" column="5" selection-start-line="152" selection-start-column="5" selection-end-line="154" selection-end-column="9" />
               <folding>
                 <element signature="e#3438#3439#0" expanded="true" />
                 <element signature="e#3472#3473#0" expanded="true" />
@@ -151,7 +147,7 @@
       <file leaf-file-name="Game.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Model/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="114">
+            <state relative-caret-position="-1518">
               <caret line="39" selection-start-line="39" selection-end-line="39" />
               <folding>
                 <element signature="e#3521#3522#0" expanded="true" />
@@ -177,8 +173,8 @@
       <file leaf-file-name="Controller.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Controller/Controller.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="199">
-              <caret line="146" column="32" lean-forward="true" selection-start-line="146" selection-start-column="32" selection-end-line="146" selection-end-column="32" />
+            <state relative-caret-position="148">
+              <caret line="143" column="62" selection-start-line="143" selection-start-column="62" selection-end-line="143" selection-end-column="62" />
               <folding>
                 <element signature="e#7178#7179#0" expanded="true" />
                 <element signature="e#7233#7234#0" expanded="true" />
@@ -218,8 +214,8 @@
       <find>nullpo</find>
       <find>getco</find>
       <find>startg</find>
-      <find>start</find>
       <find>startga</find>
+      <find>start</find>
       <find>try</find>
     </findStrings>
   </component>
@@ -457,13 +453,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/CollisionHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="13" selection-start-line="13" selection-end-line="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Model/Board.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="930">
@@ -519,10 +508,59 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/ResourceManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-13">
+          <caret line="110" column="16" selection-start-line="110" selection-start-column="16" selection-end-line="110" selection-end-column="16" />
+          <folding>
+            <element signature="e#7184#7185#0" expanded="true" />
+            <element signature="e#7218#7219#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/Editor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="123">
+          <caret line="85" selection-start-line="85" selection-end-line="85" />
+          <folding>
+            <element signature="method#Editor#0;class#Editor#0" />
+            <element signature="method#drawGrid#0;class#Editor#0" />
+            <element signature="method#setSize#0;class#Editor#0" />
+            <element signature="method#initArrayList#0;class#Editor#0" />
+            <element signature="method#saveMap#0;class#Editor#0" />
+            <element signature="method#isSetPlayer#0;class#Editor#0" />
+            <element signature="method#loadMap#0;class#Editor#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/CollisionHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/Game.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1518">
+          <caret line="39" selection-start-line="39" selection-end-line="39" />
+          <folding>
+            <element signature="e#3521#3522#0" expanded="true" />
+            <element signature="e#3551#3552#0" expanded="true" />
+            <element signature="e#6452#6453#0" expanded="true" />
+            <element signature="e#6494#6495#0" expanded="true" />
+            <element signature="e#6426#6427#0" expanded="true" />
+            <element signature="e#6460#6461#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Model/Entity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="106">
-          <caret line="152" column="5" lean-forward="true" selection-start-line="152" selection-start-column="5" selection-end-line="154" selection-end-column="9" />
+        <state relative-caret-position="2142">
+          <caret line="152" column="5" selection-start-line="152" selection-start-column="5" selection-end-line="154" selection-end-column="9" />
           <folding>
             <element signature="e#3438#3439#0" expanded="true" />
             <element signature="e#3472#3473#0" expanded="true" />
@@ -544,52 +582,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/ResourceManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-13">
-          <caret line="110" column="16" selection-start-line="110" selection-start-column="16" selection-end-line="110" selection-end-column="16" />
-          <folding>
-            <element signature="e#7184#7185#0" expanded="true" />
-            <element signature="e#7218#7219#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/Game.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="39" selection-start-line="39" selection-end-line="39" />
-          <folding>
-            <element signature="e#3521#3522#0" expanded="true" />
-            <element signature="e#3551#3552#0" expanded="true" />
-            <element signature="e#6452#6453#0" expanded="true" />
-            <element signature="e#6494#6495#0" expanded="true" />
-            <element signature="e#6426#6427#0" expanded="true" />
-            <element signature="e#6460#6461#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/Editor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="85" selection-start-line="85" selection-end-line="85" />
-          <folding>
-            <element signature="method#Editor#0;class#Editor#0" />
-            <element signature="method#drawGrid#0;class#Editor#0" />
-            <element signature="method#setSize#0;class#Editor#0" />
-            <element signature="method#initArrayList#0;class#Editor#0" />
-            <element signature="method#saveMap#0;class#Editor#0" />
-            <element signature="method#isSetPlayer#0;class#Editor#0" />
-            <element signature="method#loadMap#0;class#Editor#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Controller/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="146" column="32" lean-forward="true" selection-start-line="146" selection-start-column="32" selection-end-line="146" selection-end-column="32" />
+        <state relative-caret-position="148">
+          <caret line="143" column="62" selection-start-line="143" selection-start-column="62" selection-end-line="143" selection-end-column="62" />
           <folding>
             <element signature="e#7178#7179#0" expanded="true" />
             <element signature="e#7233#7234#0" expanded="true" />
