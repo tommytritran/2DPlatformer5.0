@@ -4,7 +4,7 @@ package Model;
 import java.io.Serializable;
 
 enum ID {
-    Player, Enemy, Spike, Enemy3, powerUP1, powerUP2, powerUP3, Tile, CheckPoint
+    Player, Enemy1, Spike, Enemy2, powerUP1, PowerUP2, CheckPoint
 }
 
 public class Entity implements Serializable {
@@ -30,24 +30,31 @@ public class Entity implements Serializable {
         this.id = id;
     }
 
-    public String getTexture(){
-        if(this.id == ID.Player){
+    public String getTexture() {
+        if (this.id == ID.Player) {
             return "src/timmy.png";
         }
-        if(this.id == ID.Enemy){
+        if (this.id == ID.Enemy1) {
             return "src/enemy1.png";
         }
-        if(this.getId() == ID.powerUP1){
+        if (this.id == ID.Enemy2) {
+            return "src/enemy2.png";
+        }
+        if (this.getId() == ID.Spike) {
+            return "src/spike.png";
+        }
+        if (this.getId() == ID.powerUP1) {
             return "src/powerUP1.png";
         }
-        if (this.getId() == ID.CheckPoint){
-            return "src/checkPoint.png";
+        if (this.getId() == ID.PowerUP2) {
+            return "src/powerUP2.png";
         }
-        if(this.getId() == ID.Spike){
-            return "src/spike.png";
+        if (this.getId() == ID.CheckPoint) {
+            return "src/checkPoint.png";
         }
         return null;
     }
+
     public double getPosX() {
         return posX;
     }
@@ -93,10 +100,10 @@ public class Entity implements Serializable {
     }
 
     public int getCount() {
-        if (this.getId() == ID.Spike){
+        if (this.getId() == ID.Spike) {
             this.count = 1;
         }
-        if(this.getId() == ID.CheckPoint){
+        if (this.getId() == ID.CheckPoint) {
             this.count = 4;
         }
         return count;
@@ -107,10 +114,10 @@ public class Entity implements Serializable {
     }
 
     public int getColumns() {
-        if (this.getId() == ID.Spike){
+        if (this.getId() == ID.Spike) {
             this.columns = 1;
         }
-        if(this.getId() == ID.CheckPoint){
+        if (this.getId() == ID.CheckPoint) {
             this.columns = 4;
         }
         return columns;
@@ -121,7 +128,7 @@ public class Entity implements Serializable {
     }
 
     public int getOffsetX() {
-        if (this.getId() == ID.Spike || this.getId() == ID.CheckPoint){
+        if (this.getId() == ID.Spike || this.getId() == ID.CheckPoint) {
             this.offsetX = 0;
         }
         return offsetX;
@@ -132,7 +139,7 @@ public class Entity implements Serializable {
     }
 
     public int getOffsetY() {
-        if (this.getId() == ID.Spike|| this.getId() == ID.CheckPoint){
+        if (this.getId() == ID.Spike || this.getId() == ID.CheckPoint) {
             this.offsetY = 0;
         }
         return offsetY;
@@ -143,10 +150,10 @@ public class Entity implements Serializable {
     }
 
     public int getWidth() {
-        if (this.getId() == ID.Spike){
+        if (this.getId() == ID.Spike) {
             this.width = 32;
         }
-        if(this.getId() == ID.CheckPoint){
+        if (this.getId() == ID.CheckPoint) {
             this.width = 64;
         }
         return width;
@@ -157,24 +164,42 @@ public class Entity implements Serializable {
     }
 
     public int getHeight() {
-        if (this.getId() == ID.Spike){
+        if (this.getId() == ID.Spike) {
             this.height = 32;
         }
-        if(this.getId() == ID.CheckPoint){
+        if (this.getId() == ID.CheckPoint) {
             this.height = 64;
         }
         return height;
     }
-    public double getStartingX(){return startingX;}
-    public double getStartingY(){return startingY;}
-    public void setStartingX(double x){startingX = x;}
-    public void setStartingY(double y){startingX = y;}
+
+    public double getStartingX() {
+        return startingX;
+    }
+
+    public double getStartingY() {
+        return startingY;
+    }
+
+    public void setStartingX(double x) {
+        startingX = x;
+    }
+
+    public void setStartingY(double y) {
+        startingX = y;
+    }
+
     public void setHeight(int height) {
         this.height = height;
     }
 
-    public int getLifePoints() { return lifePoints; }
-    public void setLifePoints(int lifePoints) {  this.lifePoints = lifePoints; }
+    public int getLifePoints() {
+        return lifePoints;
+    }
+
+    public void setLifePoints(int lifePoints) {
+        this.lifePoints = lifePoints;
+    }
 
     public void setStartingPos(double[] posXY) {
         this.startingX = posXY[0];

@@ -15,7 +15,7 @@ public class Game {
     private ResourceManager rm;
     private SoundHandler soundHandler;
     private ViewPortHandler vph;
-    private CollisionHandler ch;
+    private CollisionHandler collisionHandler;
     private Sprite playerSprite;
     private Entity playerEntity;
     private int level;
@@ -45,7 +45,7 @@ public class Game {
         }
     }
 
-    public void loadEditorMap() throws IOException {
+    public void loadEditorMap() {
         rm = new ResourceManager(pane, board);
         soundHandler = new SoundHandler(board);
         rm.renderBoard();
@@ -55,9 +55,8 @@ public class Game {
         this.playerSprite = rm.getPlayerSprite();
         setPlayerEntity();
         vph = new ViewPortHandler(pane);
-        ch = new CollisionHandler(spriteList);
+        collisionHandler = new CollisionHandler(spriteList);
         startAnimation();
-
     }
 
     public void initNewLevel() throws IOException {
@@ -81,7 +80,7 @@ public class Game {
         this.playerSprite = rm.getPlayerSprite();
         vph = new ViewPortHandler(pane);
         setPlayerEntity();
-        ch = new CollisionHandler(spriteList);
+        collisionHandler = new CollisionHandler(spriteList);
         startAnimation();
     }
 
@@ -92,7 +91,7 @@ public class Game {
         this.playerSprite = rm.getPlayerSprite();
         vph = new ViewPortHandler(pane);
         setPlayerEntity();
-        ch = new CollisionHandler(spriteList);
+        collisionHandler = new CollisionHandler(spriteList);
         startAnimation();
     }
 
@@ -127,12 +126,12 @@ public class Game {
                 sprite.updatePosition();
                 sprite.render();
             }
-            if (sprite.getID() == ID.Enemy) {
+            if (sprite.getID() == ID.Enemy1) {
                 sprite.updatePosition();
                 sprite.render();
             }
-            if (ch.collCheck(playerSprite, sprite)) {
-                if (sprite.getID() == ID.Enemy) {
+            if (collisionHandler.collCheck(playerSprite, sprite)) {
+                if (sprite.getID() == ID.Enemy1) {
                     playerSprite.die();
                 }
                 if (sprite.getID() == ID.powerUP1) {

@@ -26,7 +26,7 @@ public class Controller implements Initializable {
     @FXML
     Group group;
     @FXML
-    Label lifePointsLabel, timerLabel, warningLabel;
+    Label lifePointsLabel, timerLabel, warningLabel, startPaneErrorLabel;
     @FXML
     TextField mapWidth, mapHeight;
     private SoundHandler soundHandler;
@@ -74,7 +74,11 @@ public class Controller implements Initializable {
             menuPane.setVisible(false);
             gamePane.setVisible(true);
         }
-        game = new Game(gamePane);
+      try{
+            game = new Game(gamePane);
+      }catch (NullPointerException e){
+          startPaneErrorLabel.setText("Error, cant load game");
+      }
         startGame();
     }
 
@@ -170,7 +174,15 @@ public class Controller implements Initializable {
             menuPane.setVisible(false);
             gameOverPane.setVisible(false);
             running = !running;
-            game = new Game(gamePane, board);
+            try{
+                game = new Game(gamePane, board);
+            }catch (NullPointerException e){
+                startPaneErrorLabel.setText("Error cant load game");
+                menuPane.setVisible(false);
+                gameOverPane.setVisible(false);
+                gamePane.setVisible(false);
+                startPane.setVisible(true);
+            }
             startGame();
         }
     }

@@ -25,7 +25,7 @@ public class ResourceManager {
     public ResourceManager(Pane pane, Board board) {
         this.pane = pane;
         this.board = board;
-        if (board.getMapArray() != null){
+        if (board.getMapArray() != null) {
             mapArray = board.getMapArray();
         }
     }
@@ -95,7 +95,7 @@ public class ResourceManager {
             pane.getChildren().remove(iterSprite.next().getSprite());
         }
         Iterator<Rectangle> iterTile = tileList.iterator();
-        while (iterTile.hasNext()){
+        while (iterTile.hasNext()) {
             pane.getChildren().remove(iterTile.next());
         }
         spriteList.clear();
@@ -120,36 +120,53 @@ public class ResourceManager {
                 }
                 if (mapArray.get(i).get(j) == 3) {
                     posXY = new double[]{(j * board.getTileSize()), (i * board.getTileSize()), 0, 0};
-                    Entity enemy1 = new Entity(ID.Enemy);
-                    enemy1.setPosXY(posXY);
-                    Sprite enemySprite = new Sprite(pane, enemy1, mapArray);
+                    Entity enemyEntity1 = new Entity(ID.Enemy1);
+                    enemyEntity1.setPosXY(posXY);
+                    Sprite enemySprite = new Sprite(pane, enemyEntity1, mapArray);
                     addSprite(enemySprite);
-                    addEntity(enemy1);
-                }
-                if (mapArray.get(i).get(j) == 5) {
-                    posXY = new double[]{(j * board.getTileSize()), (i * board.getTileSize()), 0, 0};
-                    Entity spike = new Entity(ID.Spike);
-                    spike.setPosXY(posXY);
-                    Sprite enemySprite = new Sprite(pane, spike, mapArray);
-                    addSprite(enemySprite);
-                    addEntity(spike);
+                    addEntity(enemyEntity1);
                 }
                 if (mapArray.get(i).get(j) == 4) {
                     posXY = new double[]{(j * board.getTileSize()), (i * board.getTileSize()), 0, 0};
-                    Entity powerUP1Entity = new Entity(ID.powerUP1);
-                    powerUP1Entity.setPosXY(posXY);
-                    Sprite powerUP1 = new Sprite(pane, powerUP1Entity, mapArray);
-                    addEntity(powerUP1Entity);
-                    addSprite(powerUP1);
+                    Entity enemyEntity2 = new Entity(ID.Enemy2);
+                    enemyEntity2.setPosXY(posXY);
+                    Sprite enemySprite2 = new Sprite(pane, enemyEntity2, mapArray);
+                    addEntity(enemyEntity2);
+                    addSprite(enemySprite2);
                 }
-                if (mapArray.get(i).get(j) == 20) {
+                if (mapArray.get(i).get(j) == 5) {
                     posXY = new double[]{(j * board.getTileSize()), (i * board.getTileSize()), 0, 0};
-                    Entity checkpoint = new Entity(ID.CheckPoint);
-                    checkpoint.setPosXY(posXY);
-                    checkpoint.setStartingPos(posXY);
-                    Sprite ckp = new Sprite(pane, checkpoint, mapArray);
-                    addSprite(ckp);
-                    addEntity(checkpoint);
+                    Entity spikeEntity = new Entity(ID.Spike);
+                    spikeEntity.setPosXY(posXY);
+                    Sprite spikeSprite = new Sprite(pane, spikeEntity, mapArray);
+                    addSprite(spikeSprite);
+                    addEntity(spikeEntity);
+                }
+                if (mapArray.get(i).get(j) == 6) {
+                    posXY = new double[]{(j * board.getTileSize()), (i * board.getTileSize()), 0, 0};
+                    Entity powerUPEntity1 = new Entity(ID.powerUP1);
+                    powerUPEntity1.setPosXY(posXY);
+                    Sprite powerUPSprite1 = new Sprite(pane, powerUPEntity1, mapArray);
+                    addEntity(powerUPEntity1);
+                    addSprite(powerUPSprite1);
+                }
+                if (mapArray.get(i).get(j) == 7) {
+                    posXY = new double[]{(j * board.getTileSize()), (i * board.getTileSize()), 0, 0};
+                    Entity powerUPEntity2 = new Entity(ID.PowerUP2);
+                    powerUPEntity2.setPosXY(posXY);
+                    powerUPEntity2.setStartingPos(posXY);
+                    Sprite powerUPSprite2 = new Sprite(pane, powerUPEntity2, mapArray);
+                    addSprite(powerUPSprite2);
+                    addEntity(powerUPEntity2);
+                }
+                if (mapArray.get(i).get(j) == 8) {
+                    posXY = new double[]{(j * board.getTileSize()), (i * board.getTileSize()), 0, 0};
+                    Entity checkPointEntity = new Entity(ID.CheckPoint);
+                    checkPointEntity.setPosXY(posXY);
+                    checkPointEntity.setStartingPos(posXY);
+                    Sprite checkPointSprite = new Sprite(pane, checkPointEntity, mapArray);
+                    addSprite(checkPointSprite);
+                    addEntity(checkPointEntity);
                 }
             }
         }
@@ -169,15 +186,23 @@ public class ResourceManager {
                 Sprite powerUP1 = new Sprite(pane, entityList.get(i), mapArray);
                 addSprite(powerUP1);
             }
-            if (entityList.get(i).getId() == ID.Enemy) {
-                Sprite enemy = new Sprite(pane, entityList.get(i), mapArray);
-                addSprite(enemy);
+            if (entityList.get(i).getId() == ID.PowerUP2) {
+                Sprite checkpoint = new Sprite(pane, entityList.get(i), mapArray);
+                addSprite(checkpoint);
+            }
+            if (entityList.get(i).getId() == ID.Enemy1) {
+                Sprite enemy1 = new Sprite(pane, entityList.get(i), mapArray);
+                addSprite(enemy1);
+            }
+            if (entityList.get(i).getId() == ID.Enemy2) {
+                Sprite enemy2 = new Sprite(pane, entityList.get(i), mapArray);
+                addSprite(enemy2);
             }
             if (entityList.get(i).getId() == ID.Spike) {
                 Sprite spike = new Sprite(pane, entityList.get(i), mapArray);
                 addSprite(spike);
             }
-            if (entityList.get(i).getId() == ID.CheckPoint){
+            if (entityList.get(i).getId() == ID.CheckPoint) {
                 Sprite checkpoint = new Sprite(pane, entityList.get(i), mapArray);
                 addSprite(checkpoint);
             }

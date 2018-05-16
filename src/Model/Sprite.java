@@ -11,7 +11,7 @@ import javafx.util.Duration;
 import java.io.File;
 import java.util.ArrayList;
 
-import static Model.ID.Enemy;
+import static Model.ID.Enemy1;
 
 public class Sprite extends Transition {
     ImageView sprite;
@@ -44,7 +44,7 @@ public class Sprite extends Transition {
         this.pane = gamePane;
         initSprite();
         this.physics = new Physics(board, e.getPosXY());
-        if (e.getId()==Enemy){
+        if (e.getId()== Enemy1){
             movingRight=true;
             physics.maxSpeed=3;
         }
@@ -332,7 +332,7 @@ public class Sprite extends Transition {
                     die();
                 }
             }
-            if (e.getId() == Enemy && hasCollided){
+            if (e.getId() == Enemy1 && hasCollided){
                 swapDirection();
             }
             //speeds are updated
