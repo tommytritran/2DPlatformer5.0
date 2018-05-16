@@ -21,7 +21,6 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
-import java.util.UUID;
 
 public class Controller implements Initializable {
     @FXML
@@ -37,10 +36,10 @@ public class Controller implements Initializable {
     private double startTime = 0;
     private double endTime = 0;
     private double gameSaveTime = 0;
+    private String bg1 = "/bg.png";
     public Board board;
     public Game game;
     public boolean running = false;
-    public boolean newGame = true;
     AnimationTimer aTimer;
 
     @Override
@@ -49,7 +48,7 @@ public class Controller implements Initializable {
         soundHandler.bgStart();
         group.setFocusTraversable(true);
         group.requestFocus();
-        setBG();
+        setBG(bg1);
         mainPane.setVisible(true);
         editorPane.setVisible(false);
         menuPane.setVisible(false);
@@ -69,7 +68,7 @@ public class Controller implements Initializable {
         startPane.setVisible(false);
         editorPane.setVisible(false);
         gamePane.setVisible(true);
-        game = new Game(gamePane);
+        game = new Game(gamePane, mainPane);
         startGame();
     }
 
@@ -120,8 +119,10 @@ public class Controller implements Initializable {
 
             }
             if (e.getCode() == KeyCode.ESCAPE) {
+                System.out.println("ESC");
                 if (running) {
                     gamePane.setVisible(false);
+                    gameOverPane.setVisible(false);
                     menuPane.setVisible(true);
                     aTimer.stop();
                     running = !running;
@@ -143,7 +144,7 @@ public class Controller implements Initializable {
             Date dNow = new Date();
             SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yy-ss");
             String fileName = ft.format(dNow);
-            fileName += ".bin";
+            fileName += ".txt";
             FileOutputStream fileOut = new FileOutputStream(fileName);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             game.saveGame(game.getLifePoints(), getTime());
@@ -161,7 +162,7 @@ public class Controller implements Initializable {
             game.removeAll();
         }
         FileChooser fc = new FileChooser();
-        FileChooser.ExtensionFilter fcFilter = new FileChooser.ExtensionFilter("BIN Files (.bin)", "*.bin");
+        FileChooser.ExtensionFilter fcFilter = new FileChooser.ExtensionFilter("TXT Files (.txt)", "*.txt");
         fc.getExtensionFilters().add(fcFilter);
         fc.setTitle("Choose game save");
         fc.setInitialDirectory(new File("./"));
@@ -192,7 +193,7 @@ public class Controller implements Initializable {
                 startPane.setVisible(true);
             }
             try {
-                game = new Game(gamePane, board);
+                game = new Game(gamePane, mainPane, board);
                 menuPane.setVisible(false);
                 gameOverPane.setVisible(false);
                 startPane.setVisible(false);
@@ -216,8 +217,8 @@ public class Controller implements Initializable {
         aTimer.start();
     }
 
-    public void setBG() {
-        BackgroundImage myBI = new BackgroundImage(new Image(getClass().getResource("/bg.png").toString(), 800, 500, false, true),
+    public void setBG(String path) {
+        BackgroundImage myBI = new BackgroundImage(new Image(getClass().getResource(path).toString(), 800, 500, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
         Background bg = new Background(myBI);
@@ -285,7 +286,7 @@ public class Controller implements Initializable {
         if (board == null) {
             warningLabel.setText("Please add a player!");
         } else {
-            game = new Game(gamePane, board);
+            game = new Game(gamePane, gamePane, board);
             editorPane.setVisible(false);
             gamePane.setVisible(true);
             startGame();

@@ -7,9 +7,7 @@ import java.util.List;
 
 public class Board implements Serializable {
     private String mapURL;
-    private String bgURL;
     private String tileURL = "src/block.png";
-    private String soundURL;
     private String level;
     private double gameTime = 0;
     private int entitySize = 50;
@@ -41,20 +39,14 @@ public class Board implements Serializable {
         return mapURL;
     }
 
-    public String getBgURL() {
-        return bgURL;
-    }
 
     public String getTileURL() {
         return tileURL;
     }
 
-    public String getSoundURL() {
-        return soundURL;
-    }
 
-    public String getLevel() {
-        return level;
+    public int getLevel() {
+        return Integer.parseInt(level);
     }
 
     public int getEntitySize(){ return entitySize;}

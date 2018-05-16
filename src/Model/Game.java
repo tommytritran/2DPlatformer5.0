@@ -1,8 +1,9 @@
 package Model;
 
 import javafx.animation.Animation;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Game {
-    private Pane pane;
+    private Pane pane, mainPane;
     private Board board;
     private ResourceManager rm;
     private SoundHandler soundHandler;
@@ -19,6 +20,8 @@ public class Game {
     private Sprite playerSprite;
     private Entity playerEntity;
     private int level;
+    private String bg1 = "/bg.png";
+    private String bg2 = "/bg2.png";
 
     private ArrayList<ArrayList<Integer>> mapArray = new ArrayList<>();
     private ArrayList<Sprite> spriteList = new ArrayList<>();
@@ -27,15 +30,18 @@ public class Game {
     private List<String> level1 = Arrays.asList("src/boardArray.txt", "src/block.png","1");
     private List<String> level2 = Arrays.asList("src/boardArray1.txt", "src/block2.png","2");
 
-    public Game(Pane gamePane) throws IOException {
+    public Game(Pane gamePane, Pane mainPane) throws IOException {
         this.pane = gamePane;
+        this.mainPane = mainPane;
         this.board = new Board(level1);
+        this.level = board.getLevel();
         initGame();
         loadNewGame();
     }
 
-    public Game(Pane gamePane, Board board) throws IOException {
+    public Game(Pane gamePane, Pane mainPane,Board board) throws IOException {
         this.pane = gamePane;
+        this.mainPane = mainPane;
         this.board = board;
         if (board.getMapArray() != null) {
             loadEditorMap();
@@ -62,6 +68,12 @@ public class Game {
     public void initNewLevel() throws IOException {
         rm.removeAll();
         this.board = new Board(level2);
+        if(board.getLevel() == 1){
+            setBG(bg1);
+        }
+        if (board.getLevel() == 2){
+            setBG(bg2);
+        }
         initGame();
         loadNewGame();
     }
@@ -69,6 +81,12 @@ public class Game {
 
     public void initGame() throws IOException {
         rm = new ResourceManager(pane, board);
+        if(board.getLevel() == 1){
+            setBG(bg1);
+        }
+        if (board.getLevel() == 2){
+            setBG(bg2);
+        }
         this.mapArray = rm.loadMap();
         soundHandler = new SoundHandler(board);
     }
@@ -212,6 +230,14 @@ public class Game {
 
     public int getLifePoints() {
         return playerSprite.getLifePoints();
+    }
+
+    public void setBG(String path){
+        BackgroundImage myBI = new BackgroundImage(new Image(getClass().getResource(path).toString(), 800, 500, false, true),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT);
+        Background bg = new Background(myBI);
+        mainPane.setBackground(bg);
     }
 
 }
