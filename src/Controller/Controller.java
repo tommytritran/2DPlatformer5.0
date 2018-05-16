@@ -26,7 +26,7 @@ public class Controller implements Initializable {
     @FXML
     Group group;
     @FXML
-    Label lifePointsLabel, timerLabel, warningLabel, startPaneErrorLabel;
+    Label lifePointsLabel, timerLabel, warningLabel, startPaneErrorLabel,editorErrorLabel;
     @FXML
     TextField mapWidth, mapHeight;
     private SoundHandler soundHandler;
@@ -58,47 +58,47 @@ public class Controller implements Initializable {
     }
 
     public void newGame() throws IOException {
-        if (aTimer != null){
+        if (aTimer != null) {
             game.removeAll();
         }
-        if(newGame && !running){
-            newGame = false;
-            running = true;
-            menuPane.setVisible(false);
-            startPane.setVisible(false);
-            gamePane.setVisible(true);
-        }
-        if(!running){
-            running = true;
-            gameOverPane.setVisible(false);
-            menuPane.setVisible(false);
-            gamePane.setVisible(true);
-        }
-      try{
-            game = new Game(gamePane);
-      }catch (NullPointerException e){
-          startPaneErrorLabel.setText("Error, cant load game");
-      }
+        menuPane.setVisible(false);
+        gameOverPane.setVisible(false);
+        startPane.setVisible(false);
+        editorPane.setVisible(false);
+        gamePane.setVisible(true);
+        game = new Game(gamePane);
         startGame();
     }
 
     public void startGame() {
-        startTime = System.nanoTime();
-        setTime();
-        HUD.setVisible(true);
-        aTimer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                try {
-                    game.tick();
-                } catch (IOException e) {
-                    e.printStackTrace();
+            startTime = System.nanoTime();
+            setTime();
+            HUD.setVisible(true);
+            aTimer = new AnimationTimer() {
+                @Override
+                public void handle(long now) {
+                    try {
+                        game.tick();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    game.render();
+                    try {
+                        HUDhandler();
+                    }catch (NullPointerException e){
+                        startPaneErrorLabel.setText("Error cant load game");
+                        menuPane.setVisible(false);
+                        gameOverPane.setVisible(false);
+                        gamePane.setVisible(false);
+                        editorPane.setVisible(false);
+                        HUD.setVisible(false);
+                        startPane.setVisible(true);
+                        group.setFocusTraversable(true);
+                        group.requestFocus();
+                    }
                 }
-                game.render();
-                HUDhandler();
-            }
-        };
-        aTimer.start();
+            };
+            aTimer.start();
     }
 
     public void exitGame() {
@@ -165,25 +165,39 @@ public class Controller implements Initializable {
                 in.close();
                 fileIn.close();
             } catch (IOException i) {
-                i.printStackTrace();
-            } catch (ClassNotFoundException c) {
-                c.printStackTrace();
-            }
-            startPane.setVisible(false);
-            gamePane.setVisible(true);
-            menuPane.setVisible(false);
-            gameOverPane.setVisible(false);
-            running = !running;
-            try{
-                game = new Game(gamePane, board);
-            }catch (NullPointerException e){
                 startPaneErrorLabel.setText("Error cant load game");
+                menuPane.setVisible(false);
+                gameOverPane.setVisible(false);
+                gamePane.setVisible(false);
+                HUD.setVisible(false);
+                startPane.setVisible(true);
+                if (aTimer != null) {
+                    aTimer.stop();
+                }
+            } catch (ClassNotFoundException c) {
+                startPaneErrorLabel.setText("Error cant load game");
+                HUD.setVisible(false);
                 menuPane.setVisible(false);
                 gameOverPane.setVisible(false);
                 gamePane.setVisible(false);
                 startPane.setVisible(true);
             }
-            startGame();
+            try {
+                game = new Game(gamePane, board);
+                menuPane.setVisible(false);
+                gameOverPane.setVisible(false);
+                startPane.setVisible(false);
+                gamePane.setVisible(true);
+                startGame();
+            }catch (NullPointerException e){
+                startPaneErrorLabel.setText("Error cant load game");
+                menuPane.setVisible(false);
+                gameOverPane.setVisible(false);
+                gamePane.setVisible(false);
+                editorPane.setVisible(false);
+                HUD.setVisible(false);
+                startPane.setVisible(true);
+            }
         }
     }
 
@@ -228,7 +242,7 @@ public class Controller implements Initializable {
         gameSaveTime = (int) game.getGameTime();
     }
 
-    public void startEditor(){
+    public void startEditor() {
         startPane.setVisible(false);
         editorPane.setVisible(true);
         editor = new Editor(editorPane);
@@ -237,14 +251,20 @@ public class Controller implements Initializable {
     }
 
 
-    public void mapSize(){
+    public void mapSize() {
         int w = Integer.parseInt(mapWidth.getText());
         int h = Integer.parseInt(mapHeight.getText());
-        editor.setSize(w,h);
+        editor.setSize(w, h);
     }
 
-    public void drawTile(MouseEvent e){
-        editor.drawTile(e.getX(),e.getY());
+    public void drawTile(MouseEvent e) {
+        try{
+            editor.drawTile(e.getX(), e.getY());
+        }catch (IndexOutOfBoundsException exception){
+            editorErrorLabel.setText("Please enter a valid map size");
+        }catch (NullPointerException ex){
+            editorErrorLabel.setText("Please enter a valid map size");
+        }
     }
 
     public void saveEditorMap() throws FileNotFoundException {
@@ -253,10 +273,10 @@ public class Controller implements Initializable {
 
     public void playEditorMap() throws IOException {
         this.board = editor.playThisMap();
-        if(board == null){
+        if (board == null) {
             warningLabel.setText("Please add a player!");
-        }else{
-            game = new Game(gamePane,board);
+        } else {
+            game = new Game(gamePane, board);
             editorPane.setVisible(false);
             gamePane.setVisible(true);
             startGame();
@@ -268,7 +288,7 @@ public class Controller implements Initializable {
         fc.setTitle("Choose game save");
         fc.setInitialDirectory(new File("src/res/"));
         File file = fc.showOpenDialog(startPane.getParent().getScene().getWindow());
-        if(file != null){
+        if (file != null) {
             editor.loadMap(file);
         }
     }
